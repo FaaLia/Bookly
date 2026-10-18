@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { BookMarked, Search, Menu, X } from 'lucide-react'
 
-export default function Navbar({ onSearchChange }) {
+export default function Navbar({ onSearchChange, onNavigateLogin, onNavigateRegister, onNavigateHome }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [searchValue, setSearchValue] = useState('')
 
@@ -15,7 +15,14 @@ export default function Navbar({ onSearchChange }) {
       <div className="max-w-[1280px] mx-auto px-6 md:px-8 h-20 flex items-center justify-between gap-6">
         
         {/* Brand / Logo */}
-        <a href="#" className="flex items-center gap-2.5 group">
+        <a 
+          href="#" 
+          onClick={(e) => {
+            e.preventDefault()
+            if (onNavigateHome) onNavigateHome()
+          }} 
+          className="flex items-center gap-2.5 group cursor-pointer"
+        >
           <div className="w-9 h-9 rounded bg-[#192F23] flex items-center justify-center text-[#FCF9F3] shadow-sm transition-transform group-hover:scale-105">
             <BookMarked className="w-5 h-5" />
           </div>
@@ -48,13 +55,15 @@ export default function Navbar({ onSearchChange }) {
         <div className="hidden sm:flex items-center gap-3">
           <button 
             type="button" 
-            className="px-4 py-2 text-sm font-sans font-medium text-[#192F23] hover:text-black transition-colors"
+            onClick={onNavigateLogin}
+            className="px-4 py-2 text-sm font-sans font-medium text-[#192F23] hover:text-black transition-colors cursor-pointer"
           >
             Masuk
           </button>
           <button 
             type="button" 
-            className="px-4 py-2 text-sm font-sans font-medium text-[#FCF9F3] bg-[#192F23] hover:bg-[#13241b] rounded transition-all shadow-sm"
+            onClick={onNavigateRegister}
+            className="px-4 py-2 text-sm font-sans font-medium text-[#FCF9F3] bg-[#192F23] hover:bg-[#13241b] rounded transition-all shadow-sm cursor-pointer"
           >
             Mulai Membaca
           </button>
@@ -117,10 +126,24 @@ export default function Navbar({ onSearchChange }) {
             </a>
           </nav>
           <div className="flex flex-col gap-2 pt-2 border-t border-[#C2C8C2]/30">
-            <button className="w-full py-2.5 text-center text-sm font-medium text-[#192F23] border border-[#C2C8C2] rounded">
+            <button 
+              type="button"
+              onClick={() => {
+                setMobileMenuOpen(false)
+                if (onNavigateLogin) onNavigateLogin()
+              }}
+              className="w-full py-2.5 text-center text-sm font-medium text-[#192F23] border border-[#C2C8C2] rounded cursor-pointer"
+            >
               Masuk
             </button>
-            <button className="w-full py-2.5 text-center text-sm font-medium text-white bg-[#192F23] rounded shadow-sm">
+            <button 
+              type="button"
+              onClick={() => {
+                setMobileMenuOpen(false)
+                if (onNavigateRegister) onNavigateRegister()
+              }}
+              className="w-full py-2.5 text-center text-sm font-medium text-white bg-[#192F23] rounded shadow-sm cursor-pointer"
+            >
               Mulai Membaca
             </button>
           </div>

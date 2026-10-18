@@ -2,7 +2,7 @@ import React from 'react'
 import { Star, Bookmark, BookOpen } from 'lucide-react'
 import { HERO_BOOK } from '../data/mockData'
 
-export default function HeroSection() {
+export default function HeroSection({ onNavigateRegister }) {
   return (
     <section className="relative w-full bg-gradient-to-br from-[#FCF9F3] via-[#F6F3ED] to-[#FCF9F3] py-16 md:py-24 border-b border-[#C2C8C2]/20">
       <div className="max-w-[1280px] mx-auto px-6 md:px-8">
@@ -59,7 +59,8 @@ export default function HeroSection() {
 
               <button 
                 type="button"
-                className="inline-flex items-center justify-center gap-2 px-6 py-3 border border-[#C2C8C2] hover:border-[#192F23] bg-transparent text-[#192F23] font-sans text-base font-medium rounded transition-colors active:scale-[0.99]"
+                onClick={onNavigateRegister}
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 border border-[#C2C8C2] hover:border-[#192F23] bg-transparent text-[#192F23] font-sans text-base font-medium rounded transition-colors active:scale-[0.99] cursor-pointer"
               >
                 <Bookmark className="w-4 h-4" />
                 Tambah ke Daftar
