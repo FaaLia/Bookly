@@ -2,7 +2,7 @@ import React from 'react'
 import { Star, Bookmark, BookOpen } from 'lucide-react'
 import { HERO_BOOK } from '../data/mockData'
 
-export default function HeroSection({ onNavigateRegister }) {
+export default function HeroSection({ onNavigateRegister, onNavigateBookDetail }) {
   return (
     <section className="relative w-full bg-gradient-to-br from-[#FCF9F3] via-[#F6F3ED] to-[#FCF9F3] py-16 md:py-24 border-b border-[#C2C8C2]/20">
       <div className="max-w-[1280px] mx-auto px-6 md:px-8">
@@ -51,7 +51,8 @@ export default function HeroSection({ onNavigateRegister }) {
             <div className="flex flex-wrap items-center gap-4">
               <button 
                 type="button"
-                className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-[#192F23] hover:bg-[#13241b] text-white font-sans text-base font-medium rounded transition-colors shadow-sm active:scale-[0.99]"
+                onClick={() => onNavigateBookDetail && onNavigateBookDetail(HERO_BOOK.id)}
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-[#192F23] hover:bg-[#13241b] text-white font-sans text-base font-medium rounded transition-colors shadow-sm active:scale-[0.99] cursor-pointer"
               >
                 <BookOpen className="w-4 h-4" />
                 Baca Sinopsis
@@ -74,7 +75,10 @@ export default function HeroSection({ onNavigateRegister }) {
             <div className="absolute -inset-4 bg-[#DCE5DF]/40 rounded-2xl blur-xl" />
 
             {/* 3D-styled tilt Book Card */}
-            <div className="relative w-[260px] sm:w-[288px] h-[380px] sm:h-[420px] bg-[#EBE8E2] border border-[#C2C8C2]/40 rounded shadow-book transform rotate-1 hover:rotate-0 transition-transform duration-300 overflow-hidden group">
+            <div 
+              onClick={() => onNavigateBookDetail && onNavigateBookDetail(HERO_BOOK.id)}
+              className="relative w-[260px] sm:w-[288px] h-[380px] sm:h-[420px] bg-[#EBE8E2] border border-[#C2C8C2]/40 rounded shadow-book transform rotate-1 hover:rotate-0 transition-transform duration-300 overflow-hidden group cursor-pointer"
+            >
               <img 
                 src={HERO_BOOK.coverImage} 
                 alt={HERO_BOOK.title}
