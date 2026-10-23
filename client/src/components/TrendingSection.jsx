@@ -2,7 +2,7 @@ import React from 'react'
 import { Star, ArrowRight } from 'lucide-react'
 import { TRENDING_BOOKS } from '../data/mockData'
 
-export default function TrendingSection({ activeCategory }) {
+export default function TrendingSection({ activeCategory, onNavigateBookDetail }) {
   // Filter books if a specific category is selected
   const booksToDisplay = activeCategory && activeCategory !== 'all'
     ? TRENDING_BOOKS.filter(book => book.category === activeCategory)
@@ -37,7 +37,8 @@ export default function TrendingSection({ activeCategory }) {
           {(booksToDisplay.length > 0 ? booksToDisplay : TRENDING_BOOKS).map((book) => (
             <article
               key={book.id}
-              className="group flex flex-col justify-between p-4 bg-[#FCF9F3] border border-[#C2C8C2]/30 rounded-[4px] hover:shadow-md transition-all duration-300 hover:border-[#192F23]/40"
+              onClick={() => onNavigateBookDetail && onNavigateBookDetail(book.id)}
+              className="group flex flex-col justify-between p-4 bg-[#FCF9F3] border border-[#C2C8C2]/30 rounded-[4px] hover:shadow-md transition-all duration-300 hover:border-[#192F23]/40 cursor-pointer"
             >
               <div>
                 {/* Book Image */}
