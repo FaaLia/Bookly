@@ -14,48 +14,83 @@ import AuthorsDirectoryPage from './components/AuthorsDirectoryPage'
 import ProfilePage from './components/ProfilePage'
 import CatalogPage from './components/CatalogPage'
 import { BOOK_DETAILS, TRENDING_BOOKS, CATALOG_BOOKS } from './data/mockData'
+import { getBookDetailApi } from './services/bookApi'
 
 export default function App() {
   const [selectedCategory, setSelectedCategory] = useState('all')
-  // Guest by default (no auto-login)
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
-  const [userProfile, setUserProfile] = useState({
-    name: 'Dewi Anggraini',
-    avatar: null
+  const [catalogSearchQuery, setCatalogSearchQuery] = useState('')
+
+  // Cache untuk buku yang diambil dari API / dinamis
+  const [dynamicBooksCache, setDynamicBooksCache] = useState({})
+  const [isLoadingBookDetail, setIsLoadingBookDetail] = useState(false)
+
+  // Auth State tersimpan di LocalStorage agar tidak hilang saat reload
+  const [isLoggedIn, setIsLoggedIn] = useState(() => {
+    try {
+      return !!localStorage.getItem('bookly_auth_user')
+    } catch {
+      return false
+    }
   })
 
-  // Read initial route from URL hash (e.g. #register, #login, #book, #author, #profile, #catalog, #home)
+  const [userProfile, setUserProfile] = useState(() => {
+    try {
+      const saved = localStorage.getItem('bookly_auth_user')
+      if (saved) return JSON.parse(saved)
+    } catch (e) {
+      console.error(e)
+    }
+    return {
+      name: 'Dewi Anggraini',
+      email: 'dewi.anggraini@literasi.id',
+      handle: '@dewianggr',
+      avatar: null,
+      role: 'Pembaca Aktif'
+    }
+  })
+
+  // Read route from URL hash
   const parseHash = () => {
-    const hash = window.location.hash.toLowerCase()
+    const rawHash = window.location.hash || ''
+    const hash = rawHash.toLowerCase()
+
     if (hash === '#register' || hash === '#/register') {
-      return { view: 'register', bookId: null, authorId: null, tab: 'reading' }
+      return { view: 'register', bookId: null, authorId: null, tab: 'reading', search: '' }
     }
     if (hash === '#login' || hash === '#/login') {
-      return { view: 'login', bookId: null, authorId: null, tab: 'reading' }
+      return { view: 'login', bookId: null, authorId: null, tab: 'reading', search: '' }
     }
-    // Catalog page route: e.g. #/catalog, #catalog, #/katalog, #katalog, #/collections, #collections
+
+    // Catalog page route
     if (
-      hash === '#catalog' ||
-      hash === '#/catalog' ||
-      hash === '#katalog' ||
-      hash === '#/katalog' ||
-      hash === '#collections' ||
-      hash === '#/collections' ||
-      hash === '#koleksi' ||
-      hash === '#/koleksi'
+      hash.startsWith('#catalog') ||
+      hash.startsWith('#/catalog') ||
+      hash.startsWith('#katalog') ||
+      hash.startsWith('#/katalog') ||
+      hash.startsWith('#collections') ||
+      hash.startsWith('#/collections')
     ) {
-      return { view: 'catalog', bookId: null, authorId: null, tab: 'reading' }
+      let search = ''
+      const qIndex = rawHash.indexOf('q=')
+      if (qIndex !== -1) {
+        search = decodeURIComponent(rawHash.slice(qIndex + 2).split('&')[0])
+      }
+      return { view: 'catalog', bookId: null, authorId: null, tab: 'reading', search }
     }
-    // Specific author detail route: e.g. #/author/julian-cross, #/author/eka-kurniawan
+
+    // Author detail route
     if (hash.startsWith('#/author/') || hash.startsWith('#author/')) {
-      const parts = hash.split('/')
+      const parts = rawHash.split('/')
       const authorId = parts[2] || 'julian-cross'
-      return { view: 'author-detail', bookId: null, authorId, tab: 'reading' }
+      return { view: 'author-detail', bookId: null, authorId, tab: 'reading', search: '' }
     }
-    // Authors directory / recommendations route: e.g. #/author, #author, #penulis, #/penulis
+
+    // Authors directory
     if (hash === '#author' || hash === '#/author' || hash === '#penulis' || hash === '#/penulis') {
-      return { view: 'authors', bookId: null, authorId: null, tab: 'reading' }
+      return { view: 'authors', bookId: null, authorId: null, tab: 'reading', search: '' }
     }
+
+    // Profile route
     if (
       hash === '#profile' ||
       hash.startsWith('#/profile') ||
@@ -67,14 +102,17 @@ export default function App() {
       else if (hash.includes('wishlist') || hash.includes('ingin')) tab = 'wishlist'
       else if (hash.includes('finished') || hash.includes('selesai')) tab = 'finished'
       else if (hash.includes('reviews') || hash.includes('ulasan')) tab = 'reviews'
-      return { view: 'profile', bookId: null, authorId: null, tab }
+      return { view: 'profile', bookId: null, authorId: null, tab, search: '' }
     }
+
+    // Book Detail route
     if (hash.startsWith('#book') || hash.startsWith('#/book') || hash === '#detail') {
-      const parts = hash.split('/')
+      const parts = rawHash.split('/')
       const id = parts[2] || 'memory-of-water'
-      return { view: 'book-detail', bookId: id, authorId: null, tab: 'reading' }
+      return { view: 'book-detail', bookId: id, authorId: null, tab: 'reading', search: '' }
     }
-    return { view: 'home', bookId: null, authorId: null, tab: 'reading' }
+
+    return { view: 'home', bookId: null, authorId: null, tab: 'reading', search: '' }
   }
 
   const initialRoute = parseHash()
@@ -83,14 +121,20 @@ export default function App() {
   const [selectedAuthorId, setSelectedAuthorId] = useState(initialRoute.authorId || 'julian-cross')
   const [profileTab, setProfileTab] = useState(initialRoute.tab || 'reading')
 
-  // Always scroll to the very top when view changes
+  useEffect(() => {
+    if (initialRoute.search) {
+      setCatalogSearchQuery(initialRoute.search)
+    }
+  }, [])
+
+  // Scroll to top on view changes
   useEffect(() => {
     window.scrollTo(0, 0)
     document.documentElement.scrollTop = 0
     document.body.scrollTop = 0
   }, [currentView])
 
-  // Listen to browser hash changes (support back/forward buttons and direct linking)
+  // Listen to browser hash changes
   useEffect(() => {
     const handleHashChange = () => {
       const route = parseHash()
@@ -98,6 +142,8 @@ export default function App() {
       if (route.bookId) setSelectedBookId(route.bookId)
       if (route.authorId) setSelectedAuthorId(route.authorId)
       if (route.tab) setProfileTab(route.tab)
+      if (route.search) setCatalogSearchQuery(route.search)
+
       window.scrollTo(0, 0)
       document.documentElement.scrollTop = 0
       document.body.scrollTop = 0
@@ -107,14 +153,46 @@ export default function App() {
     return () => window.removeEventListener('hashchange', handleHashChange)
   }, [])
 
-  const navigateTo = (view, paramId = null, tab = 'reading') => {
+  // Fetch book detail from API if not found in mock data
+  useEffect(() => {
+    if (currentView === 'book-detail' && selectedBookId) {
+      const isMock =
+        selectedBookId === 'memory-of-water' ||
+        CATALOG_BOOKS.some((b) => b.id === selectedBookId) ||
+        TRENDING_BOOKS.some((b) => b.id === selectedBookId)
+
+      if (!isMock && !dynamicBooksCache[selectedBookId]) {
+        setIsLoadingBookDetail(true)
+        getBookDetailApi(selectedBookId)
+          .then((book) => {
+            if (book) {
+              setDynamicBooksCache((prev) => ({ ...prev, [selectedBookId]: book }))
+            }
+            setIsLoadingBookDetail(false)
+          })
+          .catch(() => setIsLoadingBookDetail(false))
+      }
+    }
+  }, [currentView, selectedBookId, dynamicBooksCache])
+
+  const navigateTo = (view, paramId = null, tab = 'reading', bookObj = null) => {
     setCurrentView(view)
+
+    if (bookObj && paramId) {
+      setDynamicBooksCache((prev) => ({ ...prev, [paramId]: bookObj }))
+    }
+
     if (view === 'register') {
       window.location.hash = '#register'
     } else if (view === 'login') {
       window.location.hash = '#login'
     } else if (view === 'catalog' || view === 'katalog') {
-      window.location.hash = '#/catalog'
+      if (paramId && typeof paramId === 'string') {
+        setCatalogSearchQuery(paramId)
+        window.location.hash = `#/catalog?q=${encodeURIComponent(paramId)}`
+      } else {
+        window.location.hash = '#/catalog'
+      }
     } else if (view === 'book-detail') {
       const targetId = paramId || 'memory-of-water'
       setSelectedBookId(targetId)
@@ -133,6 +211,7 @@ export default function App() {
         window.location.hash = '#/'
       }
     }
+
     window.scrollTo(0, 0)
     document.documentElement.scrollTop = 0
     document.body.scrollTop = 0
@@ -142,6 +221,43 @@ export default function App() {
     setSelectedCategory(categoryId)
   }
 
+  // Handle Auth login/register success
+  const handleAuthSuccess = (userData = {}) => {
+    const updated = {
+      name: userData?.name || 'Dewi Anggraini',
+      email: userData?.email || 'dewi.anggraini@literasi.id',
+      handle: userData?.name ? `@${userData.name.toLowerCase().replace(/\s+/g, '')}` : '@dewianggr',
+      avatar: null,
+      role: 'Pembaca Aktif'
+    }
+    setIsLoggedIn(true)
+    setUserProfile(updated)
+    try {
+      localStorage.setItem('bookly_auth_user', JSON.stringify(updated))
+    } catch (e) {
+      console.error(e)
+    }
+    navigateTo('profile')
+  }
+
+  // Handle Logout
+  const handleLogout = () => {
+    setIsLoggedIn(false)
+    try {
+      localStorage.removeItem('bookly_auth_user')
+    } catch (e) {
+      console.error(e)
+    }
+    navigateTo('home')
+  }
+
+  // Handle Search from Navbar
+  const handleGlobalSearch = (query) => {
+    const q = (query || '').trim()
+    setCatalogSearchQuery(q)
+    navigateTo('catalog', q)
+  }
+
   // Render unified navbar across views
   const renderNavbar = (activeNav = 'home') => (
     <Navbar
@@ -149,10 +265,10 @@ export default function App() {
       isLoggedIn={isLoggedIn}
       userName={userProfile.name}
       userAvatar={userProfile.avatar}
-      onLogout={() => {
-        setIsLoggedIn(false)
-        navigateTo('home')
-      }}
+      initialSearch={catalogSearchQuery}
+      onSearchSubmit={handleGlobalSearch}
+      onNavigateBookDetail={(id, bookObj) => navigateTo('book-detail', id, 'reading', bookObj)}
+      onLogout={handleLogout}
       onNavigateLogin={() => navigateTo('login')}
       onNavigateRegister={() => navigateTo('register')}
       onNavigateHome={() => navigateTo('home')}
@@ -164,9 +280,33 @@ export default function App() {
 
   // Helper to fetch book data for detail view
   const getActiveBookData = () => {
+    // 1. Cek dynamic / API cache
+    if (selectedBookId && dynamicBooksCache[selectedBookId]) {
+      const dyn = dynamicBooksCache[selectedBookId]
+      return {
+        ...BOOK_DETAILS,
+        id: dyn.id,
+        title: dyn.title,
+        author: dyn.author,
+        coverImage: dyn.coverImage,
+        rating: dyn.rating,
+        reviewsCount: dyn.reviewsCount,
+        description: dyn.description || BOOK_DETAILS.description,
+        publisher: dyn.publisher || BOOK_DETAILS.publisher,
+        publishedDate: dyn.publishedDate || dyn.year || BOOK_DETAILS.publishedDate,
+        pages: dyn.pages || BOOK_DETAILS.pages,
+        isbn: dyn.isbn || BOOK_DETAILS.isbn,
+        category: dyn.category || BOOK_DETAILS.category,
+        reviews: dyn.reviews || BOOK_DETAILS.reviews,
+      }
+    }
+
+    // 2. Default mock book
     if (!selectedBookId || selectedBookId === 'memory-of-water') {
       return BOOK_DETAILS
     }
+
+    // 3. Cek Katalog Kurasi
     const foundCatalog = CATALOG_BOOKS?.find((b) => b.id === selectedBookId)
     if (foundCatalog) {
       return {
@@ -178,8 +318,12 @@ export default function App() {
         rating: foundCatalog.rating,
         reviewsCount: foundCatalog.reviewsCount,
         category: foundCatalog.categoryLabel || foundCatalog.category,
+        pages: foundCatalog.pages || BOOK_DETAILS.pages,
+        format: foundCatalog.format || BOOK_DETAILS.format,
       }
     }
+
+    // 4. Cek Trending Section
     const foundTrending = TRENDING_BOOKS.find((b) => b.id === selectedBookId)
     if (foundTrending) {
       return {
@@ -192,6 +336,7 @@ export default function App() {
         reviewsCount: foundTrending.reviewsCount,
       }
     }
+
     return BOOK_DETAILS
   }
 
@@ -203,10 +348,7 @@ export default function App() {
         onNavigateLogin={() => navigateTo('login')}
         onNavigateToHome={() => navigateTo('home')}
         onNavigateHome={() => navigateTo('home')}
-        onRegisterSuccess={() => {
-          setIsLoggedIn(true)
-          navigateTo('profile')
-        }}
+        onRegisterSuccess={handleAuthSuccess}
       />
     )
   }
@@ -217,10 +359,7 @@ export default function App() {
       <LoginPage
         onNavigateToRegister={() => navigateTo('register')}
         onNavigateToHome={() => navigateTo('home')}
-        onLoginSuccess={() => {
-          setIsLoggedIn(true)
-          navigateTo('profile')
-        }}
+        onLoginSuccess={handleAuthSuccess}
       />
     )
   }
@@ -235,9 +374,10 @@ export default function App() {
         {/* Catalog Main Content */}
         <CatalogPage
           onNavigateHome={() => navigateTo('home')}
-          onNavigateBookDetail={(id) => navigateTo('book-detail', id)}
+          onNavigateBookDetail={(id, bookObj) => navigateTo('book-detail', id, 'reading', bookObj)}
           onNavigateAuthor={(authorId) => navigateTo('author-detail', authorId || 'julian-cross')}
           initialCategory={selectedCategory}
+          initialSearchQuery={catalogSearchQuery}
         />
       </div>
     )
@@ -252,32 +392,38 @@ export default function App() {
 
         {/* Book Detail Content */}
         <main className="flex-1">
-          <BookDetailPage
-            book={getActiveBookData()}
-            onNavigateHome={() => navigateTo('home')}
-            onNavigateAuthor={(authorId) => navigateTo('author-detail', authorId || 'julian-cross')}
-            onNavigateCategory={(cat) => {
-              setSelectedCategory(cat)
-              navigateTo('catalog')
-            }}
-            onNavigateRegister={() => navigateTo('register')}
-          />
+          {isLoadingBookDetail ? (
+            <div className="max-w-[1280px] mx-auto px-6 py-20 flex flex-col items-center justify-center gap-4">
+              <div className="w-12 h-12 rounded-full border-3 border-[#1B2820] border-t-transparent animate-spin" />
+              <p className="font-serif text-lg text-[#1E2621]">
+                Memuat data buku...
+              </p>
+            </div>
+          ) : (
+            <BookDetailPage
+              book={getActiveBookData()}
+              onNavigateHome={() => navigateTo('home')}
+              onNavigateAuthor={(authorId) => navigateTo('author-detail', authorId || 'julian-cross')}
+              onNavigateCategory={(cat) => {
+                setSelectedCategory(cat)
+                navigateTo('catalog')
+              }}
+              onNavigateRegister={() => navigateTo('register')}
+            />
+          )}
         </main>
 
         {/* Footer */}
-        <Footer />
+        <Footer onNavigateCatalog={() => navigateTo('catalog')} />
       </div>
     )
   }
 
-  // 5. Authors Directory Page View (Rekomendasi Penulis Terbaik & Populer)
+  // 5. Authors Directory Page View
   if (currentView === 'authors') {
     return (
       <div className="min-h-screen flex flex-col bg-[#FCF9F3] text-[#1C1C18]">
-        {/* Navigation Bar */}
         {renderNavbar('author')}
-
-        {/* Authors Recommendations Directory */}
         <main className="flex-1">
           <AuthorsDirectoryPage
             onNavigateHome={() => navigateTo('home')}
@@ -285,21 +431,16 @@ export default function App() {
             onNavigateBookDetail={(id) => navigateTo('book-detail', id)}
           />
         </main>
-
-        {/* Footer */}
-        <Footer />
+        <Footer onNavigateCatalog={() => navigateTo('catalog')} />
       </div>
     )
   }
 
-  // 6. Author Detail Page View (Detail Profil Penulis Spesifik)
+  // 6. Author Detail Page View
   if (currentView === 'author-detail' || currentView === 'author') {
     return (
       <div className="min-h-screen flex flex-col bg-[#FCF9F3] text-[#1C1C18]">
-        {/* Navigation Bar */}
         {renderNavbar('author')}
-
-        {/* Author Page Content */}
         <main className="flex-1">
           <AuthorPage
             authorId={selectedAuthorId}
@@ -308,9 +449,7 @@ export default function App() {
             onNavigateBookDetail={(id) => navigateTo('book-detail', id)}
           />
         </main>
-
-        {/* Footer */}
-        <Footer />
+        <Footer onNavigateCatalog={() => navigateTo('catalog')} />
       </div>
     )
   }
@@ -319,29 +458,24 @@ export default function App() {
   if (currentView === 'profile') {
     return (
       <div className="min-h-screen flex flex-col bg-[#FCF9F3] text-[#1C1C18]">
-        {/* Navigation Bar */}
         {renderNavbar('profile')}
-
-        {/* Profile Page Content */}
         <main className="flex-1">
           <ProfilePage
             initialTab={profileTab}
             userProfile={userProfile}
-            onUpdateProfile={(updated) =>
-              setUserProfile((prev) => ({
-                ...prev,
-                name: updated.name,
-                avatar: updated.avatar
-              }))
-            }
+            onUpdateProfile={(updated) => {
+              const merged = { ...userProfile, ...updated }
+              setUserProfile(merged)
+              try {
+                localStorage.setItem('bookly_auth_user', JSON.stringify(merged))
+              } catch (e) {}
+            }}
             onNavigateHome={() => navigateTo('home')}
             onNavigateAuthor={(authorId) => navigateTo('author-detail', authorId || 'julian-cross')}
             onNavigateBookDetail={(id) => navigateTo('book-detail', id)}
           />
         </main>
-
-        {/* Footer */}
-        <Footer />
+        <Footer onNavigateCatalog={() => navigateTo('catalog')} />
       </div>
     )
   }
@@ -349,19 +483,13 @@ export default function App() {
   // 8. Home / Landing Page View
   return (
     <div className="min-h-screen flex flex-col bg-[#FCF9F3] text-[#1C1C18]">
-      {/* Top Navigation */}
       {renderNavbar('home')}
-
-      {/* Main Content Area */}
       <main className="flex-1">
-        {/* Hero Section: Editor's Choice */}
         <HeroSection
           onNavigateRegister={() => navigateTo('register')}
           onNavigateBookDetail={(id) => navigateTo('book-detail', id)}
           onNavigateAuthor={(authorId) => navigateTo('author-detail', authorId || 'julian-cross')}
         />
-
-        {/* Category Filter Pills Bar */}
         <CategoryFilterPills
           selectedCategory={selectedCategory}
           onSelectCategory={(cat) => {
@@ -369,25 +497,15 @@ export default function App() {
             navigateTo('catalog')
           }}
         />
-
-        {/* Trending / Highly Rated Books */}
-        <TrendingSection 
-          activeCategory={selectedCategory} 
+        <TrendingSection
+          activeCategory={selectedCategory}
           onNavigateBookDetail={(id) => navigateTo('book-detail', id)}
           onNavigateAuthor={(authorId) => navigateTo('author-detail', authorId || 'julian-cross')}
           onNavigateCatalog={() => navigateTo('catalog')}
         />
-
-        {/* Curated Editorial Collections */}
-        <CuratedCollectionsSection
-          onNavigateCatalog={() => navigateTo('catalog')}
-        />
-
-        {/* Recent Community Reviews */}
+        <CuratedCollectionsSection onNavigateCatalog={() => navigateTo('catalog')} />
         <ReviewsSection />
       </main>
-
-      {/* Footer */}
       <Footer onNavigateCatalog={() => navigateTo('catalog')} />
     </div>
   )
