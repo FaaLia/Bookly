@@ -3,9 +3,9 @@ import { CATEGORIES } from '../data/mockData'
 
 export default function CategoryFilterPills({ selectedCategory, onSelectCategory }) {
   return (
-    <section id="categories" className="w-full bg-[#F6F3ED] border-y border-[#C2C8C2]/20 py-6">
+    <section id="categories" className="w-full bg-[#FAF7F2] border-b border-[#ECE4D8] py-4">
       <div className="max-w-[1280px] mx-auto px-6 md:px-8">
-        <div className="flex items-center gap-3 overflow-x-auto no-scrollbar pb-1">
+        <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-0.5">
           {CATEGORIES.map((cat) => {
             const isActive = selectedCategory === cat.id
             return (
@@ -13,10 +13,10 @@ export default function CategoryFilterPills({ selectedCategory, onSelectCategory
                 key={cat.id}
                 type="button"
                 onClick={() => onSelectCategory(cat.id)}
-                className={`flex-shrink-0 h-[42px] px-4 py-2 rounded-[12px] font-sans text-base transition-all duration-200 flex items-center justify-center ${
+                className={`flex-shrink-0 px-3.5 py-1.5 rounded-full font-sans text-xs transition-colors cursor-pointer ${
                   isActive
-                    ? 'bg-[#DCE5DF] border border-[#192F23]/20 text-[#151D1A] font-medium shadow-sm'
-                    : 'bg-[#FCF9F3] border border-[#C2C8C2]/30 text-[#424844] hover:bg-[#F0EEE8] hover:border-[#C2C8C2]/60'
+                    ? 'bg-[#192F23] text-white font-medium'
+                    : 'bg-white border border-[#DFD5C7] text-[#424844] hover:border-[#192F23] hover:text-[#192F23]'
                 }`}
               >
                 {cat.label}

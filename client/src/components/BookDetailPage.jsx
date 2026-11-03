@@ -18,6 +18,7 @@ import {
   Eye,
   EyeOff,
   Sparkles,
+  User,
 } from 'lucide-react'
 import { BOOK_DETAILS } from '../data/mockData'
 
@@ -25,7 +26,8 @@ export default function BookDetailPage({
   book = BOOK_DETAILS, 
   onNavigateHome, 
   onNavigateCategory,
-  onNavigateRegister 
+  onNavigateRegister,
+  onNavigateAuthor 
 }) {
   // Reading status state
   const [readingStatus, setReadingStatus] = useState('want_to_read') // 'want_to_read', 'reading', 'finished'
@@ -297,6 +299,17 @@ export default function BookDetailPage({
               {/* Author */}
               <p className="font-sans font-normal text-base sm:text-lg text-[#424844] mb-6">
                 Oleh <span className="text-[#1C1C18] font-medium">{book.author}</span>
+                <button
+                  type="button"
+                  onClick={() => {
+                    const slug = book.author === 'Julian Cross' || book.author === 'Valerie Vance' ? 'julian-cross' : 'julian-cross'
+                    if (onNavigateAuthor) onNavigateAuthor(slug)
+                  }}
+                  className="inline-flex items-center gap-1.5 ml-3 px-3 py-1 text-xs font-semibold rounded-lg bg-[#FAF7F2] hover:bg-[#EFE8DD] border border-[#DFD5C7] text-[#192F23] transition-colors cursor-pointer shadow-xs"
+                >
+                  <User className="w-3.5 h-3.5 text-[#835418]" />
+                  <span>Lihat Profil Penulis</span>
+                </button>
               </p>
 
               {/* Metadata Grid (Halaman, Penerbit, Terbit, ISBN) */}

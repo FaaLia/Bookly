@@ -1,41 +1,33 @@
 import React from 'react'
-import { Star, ArrowRight } from 'lucide-react'
+import { Star } from 'lucide-react'
 import { COMMUNITY_REVIEWS } from '../data/mockData'
 
 export default function ReviewsSection() {
   return (
-    <section id="reviews" className="w-full bg-[#FCF9F3] py-20 md:py-24">
+    <section id="reviews" className="w-full bg-[#FCF9F3] py-14 md:py-18">
       <div className="max-w-[1280px] mx-auto px-6 md:px-8">
         
         {/* Section Header */}
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-12">
-          <div className="flex flex-col gap-2">
-            <span className="font-sans text-sm md:text-base font-normal tracking-[1.6px] uppercase text-[#424844]">
-              ULASAN PEMBACA
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
+          <div>
+            <span className="text-xs uppercase tracking-wider text-[#835418] font-semibold">
+              Ulasan Pembaca
             </span>
-            <h2 className="font-serif text-3xl sm:text-4xl font-medium text-[#192F23] tracking-tight">
-              Ulasan Komunitas Terbaru
+            <h2 className="font-serif text-2xl sm:text-3xl font-medium text-[#192F23] mt-1">
+              Catatan & Refleksi Terbaru
             </h2>
           </div>
-
-          <a 
-            href="#reviews" 
-            className="group inline-flex items-center gap-1.5 text-base font-sans font-normal text-[#192F23] hover:underline"
-          >
-            <span>Lihat Semua 1.400+ Ulasan</span>
-            <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
-          </a>
         </div>
 
-        {/* 2 Wide Review Cards */}
+        {/* Review Cards Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {COMMUNITY_REVIEWS.map((review) => (
             <div
               key={review.id}
-              className="flex flex-col sm:flex-row items-start p-6 gap-6 bg-[#FCF9F3] border border-[#C2C8C2]/30 rounded-[4px] hover:shadow-md transition-shadow duration-300"
+              className="flex items-start p-5 gap-4 bg-[#FAF7F2] border border-[#ECE4D8] rounded-xl"
             >
               {/* Book Thumbnail */}
-              <div className="w-16 h-24 flex-shrink-0 bg-[#F0EEE8] rounded-[2px] overflow-hidden shadow-sm">
+              <div className="w-16 h-24 flex-shrink-0 bg-[#E8DFD3] rounded overflow-hidden shadow-xs">
                 <img
                   src={review.coverImage}
                   alt={review.bookTitle}
@@ -44,38 +36,29 @@ export default function ReviewsSection() {
               </div>
 
               {/* Review Content */}
-              <div className="flex-1 flex flex-col gap-1.5 min-w-0">
-                {/* Reviewer Header */}
-                <div className="flex items-center justify-between gap-2">
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center justify-between gap-2 mb-1">
                   <div className="flex items-center gap-2 min-w-0">
-                    <div 
-                      className="w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0"
-                      style={{ backgroundColor: review.avatarBg }}
-                    >
-                      {review.avatarInitial}
-                    </div>
-                    <span className="font-sans text-sm sm:text-base font-normal text-[#1C1C18] truncate">
+                    <span className="text-xs font-semibold text-[#192F23] truncate">
                       {review.reviewerName}
                     </span>
+                    <span className="text-xs text-[#737973]">•</span>
+                    <span className="text-xs text-[#737973] truncate">
+                      {review.bookTitle}
+                    </span>
                   </div>
-
-                  {/* 5 Stars */}
-                  <div className="flex items-center gap-0.5 text-[#192F23] flex-shrink-0">
-                    {[...Array(review.rating)].map((_, i) => (
-                      <Star key={i} className="w-3 h-3 fill-[#192F23] text-[#192F23]" />
-                    ))}
+                  <div className="flex items-center text-[#835418] text-xs">
+                    ★ <span className="ml-0.5 font-medium">{review.rating}</span>
                   </div>
                 </div>
 
-                {/* Book Title */}
-                <h4 className="font-serif text-base font-medium text-[#1C1C18] line-clamp-1">
-                  {review.bookTitle}
-                </h4>
-
-                {/* Review Quote */}
-                <p className="font-sans italic text-sm sm:text-base text-[#424844] line-clamp-2 leading-relaxed">
-                  "{review.quote}"
+                <p className="font-serif italic text-xs sm:text-sm text-[#424844] leading-relaxed line-clamp-3 my-2">
+                  "{review.content}"
                 </p>
+
+                <div className="text-[11px] text-[#737973] pt-1">
+                  {review.date}
+                </div>
               </div>
             </div>
           ))}
