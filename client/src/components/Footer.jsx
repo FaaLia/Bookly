@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { BookMarked, Send, Heart } from 'lucide-react'
 
-export default function Footer() {
+export default function Footer({ onNavigateCatalog }) {
   const [email, setEmail] = useState('')
   const [subscribed, setSubscribed] = useState(false)
 
@@ -21,11 +21,8 @@ export default function Footer() {
           {/* Brand Info */}
           <div className="lg:col-span-2 flex flex-col gap-4">
             <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded bg-[#192F23] flex items-center justify-center text-[#FCF9F3]">
-                <BookMarked className="w-4 h-4" />
-              </div>
               <span className="font-serif text-2xl font-medium text-[#192F23]">
-                Bookly<span className="text-[#695C56]">.</span>
+                Bookly
               </span>
             </div>
             <p className="font-sans text-sm leading-relaxed text-[#424844] max-w-sm">
@@ -38,7 +35,20 @@ export default function Footer() {
             <h5 className="font-serif text-base font-semibold text-[#192F23]">Eksplorasi</h5>
             <ul className="flex flex-col gap-2 font-sans text-sm">
               <li><a href="#trending" className="hover:text-[#192F23] transition-colors">Buku Terpopuler</a></li>
-              <li><a href="#collections" className="hover:text-[#192F23] transition-colors">Koleksi Kurasi</a></li>
+              <li>
+                <a
+                  href="#/catalog"
+                  onClick={(e) => {
+                    if (onNavigateCatalog) {
+                      e.preventDefault()
+                      onNavigateCatalog()
+                    }
+                  }}
+                  className="hover:text-[#192F23] transition-colors cursor-pointer"
+                >
+                  Katalog Buku
+                </a>
+              </li>
               <li><a href="#categories" className="hover:text-[#192F23] transition-colors">Pilihan Kategori</a></li>
               <li><a href="#reviews" className="hover:text-[#192F23] transition-colors">Ulasan Pembaca</a></li>
             </ul>
@@ -58,7 +68,7 @@ export default function Footer() {
           {/* Newsletter Box */}
           <div className="flex flex-col gap-3">
             <h5 className="font-serif text-base font-semibold text-[#192F23]">Surat Sastra</h5>
-            <p className="font-sans text-xs text-[#737973] leading-normal">
+            <p className="font-sans text-xs text-[#736E65] leading-normal">
               Daftar buletin mingguan kami untuk esai buku pilihan dan rekomendasi langsung.
             </p>
             {subscribed ? (
@@ -89,7 +99,7 @@ export default function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 font-sans text-xs text-[#737973]">
+        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 font-sans text-xs text-[#736E65]">
           <p>© {new Date().getFullYear()} Bookly. Hak cipta dilindungi.</p>
           <p className="flex items-center gap-1">
             Dirancang dengan <Heart className="w-3 h-3 text-[#695C56] fill-[#695C56]" /> untuk pencinta buku.

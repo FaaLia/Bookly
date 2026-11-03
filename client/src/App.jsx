@@ -12,7 +12,8 @@ import BookDetailPage from './components/BookDetailPage'
 import AuthorPage from './components/AuthorPage'
 import AuthorsDirectoryPage from './components/AuthorsDirectoryPage'
 import ProfilePage from './components/ProfilePage'
-import { BOOK_DETAILS, TRENDING_BOOKS } from './data/mockData'
+import CatalogPage from './components/CatalogPage'
+import { BOOK_DETAILS, TRENDING_BOOKS, CATALOG_BOOKS } from './data/mockData'
 
 export default function App() {
   const [selectedCategory, setSelectedCategory] = useState('all')
@@ -23,7 +24,7 @@ export default function App() {
     avatar: null
   })
 
-  // Read initial route from URL hash (e.g. #register, #login, #book, #author, #profile, #home)
+  // Read initial route from URL hash (e.g. #register, #login, #book, #author, #profile, #catalog, #home)
   const parseHash = () => {
     const hash = window.location.hash.toLowerCase()
     if (hash === '#register' || hash === '#/register') {
@@ -31,6 +32,19 @@ export default function App() {
     }
     if (hash === '#login' || hash === '#/login') {
       return { view: 'login', bookId: null, authorId: null, tab: 'reading' }
+    }
+    // Catalog page route: e.g. #/catalog, #catalog, #/katalog, #katalog, #/collections, #collections
+    if (
+      hash === '#catalog' ||
+      hash === '#/catalog' ||
+      hash === '#katalog' ||
+      hash === '#/katalog' ||
+      hash === '#collections' ||
+      hash === '#/collections' ||
+      hash === '#koleksi' ||
+      hash === '#/koleksi'
+    ) {
+      return { view: 'catalog', bookId: null, authorId: null, tab: 'reading' }
     }
     // Specific author detail route: e.g. #/author/julian-cross, #/author/eka-kurniawan
     if (hash.startsWith('#/author/') || hash.startsWith('#author/')) {
@@ -69,6 +83,13 @@ export default function App() {
   const [selectedAuthorId, setSelectedAuthorId] = useState(initialRoute.authorId || 'julian-cross')
   const [profileTab, setProfileTab] = useState(initialRoute.tab || 'reading')
 
+  // Always scroll to the very top when view changes
+  useEffect(() => {
+    window.scrollTo(0, 0)
+    document.documentElement.scrollTop = 0
+    document.body.scrollTop = 0
+  }, [currentView])
+
   // Listen to browser hash changes (support back/forward buttons and direct linking)
   useEffect(() => {
     const handleHashChange = () => {
@@ -77,7 +98,9 @@ export default function App() {
       if (route.bookId) setSelectedBookId(route.bookId)
       if (route.authorId) setSelectedAuthorId(route.authorId)
       if (route.tab) setProfileTab(route.tab)
-      window.scrollTo({ top: 0, behavior: 'smooth' })
+      window.scrollTo(0, 0)
+      document.documentElement.scrollTop = 0
+      document.body.scrollTop = 0
     }
 
     window.addEventListener('hashchange', handleHashChange)
@@ -90,6 +113,8 @@ export default function App() {
       window.location.hash = '#register'
     } else if (view === 'login') {
       window.location.hash = '#login'
+    } else if (view === 'catalog' || view === 'katalog') {
+      window.location.hash = '#/catalog'
     } else if (view === 'book-detail') {
       const targetId = paramId || 'memory-of-water'
       setSelectedBookId(targetId)
@@ -104,9 +129,13 @@ export default function App() {
       setProfileTab(tab)
       window.location.hash = tab !== 'reading' ? `#/profile?tab=${tab}` : '#/profile'
     } else {
-      window.location.hash = ''
+      if (window.location.hash && window.location.hash !== '#/' && window.location.hash !== '#') {
+        window.location.hash = '#/'
+      }
     }
-    window.scrollTo({ top: 0, behavior: 'smooth' })
+    window.scrollTo(0, 0)
+    document.documentElement.scrollTop = 0
+    document.body.scrollTop = 0
   }
 
   const handleSelectCategory = (categoryId) => {
@@ -127,6 +156,7 @@ export default function App() {
       onNavigateLogin={() => navigateTo('login')}
       onNavigateRegister={() => navigateTo('register')}
       onNavigateHome={() => navigateTo('home')}
+      onNavigateCatalog={() => navigateTo('catalog')}
       onNavigateAuthor={(authorId) => navigateTo(authorId ? 'author-detail' : 'authors', authorId)}
       onNavigateProfile={() => navigateTo('profile')}
     />
@@ -134,8 +164,21 @@ export default function App() {
 
   // Helper to fetch book data for detail view
   const getActiveBookData = () => {
-    if (selectedBookId === 'memory-of-water' || !selectedBookId) {
+    if (!selectedBookId || selectedBookId === 'memory-of-water') {
       return BOOK_DETAILS
+    }
+    const foundCatalog = CATALOG_BOOKS?.find((b) => b.id === selectedBookId)
+    if (foundCatalog) {
+      return {
+        ...BOOK_DETAILS,
+        id: foundCatalog.id,
+        title: foundCatalog.title,
+        author: foundCatalog.author,
+        coverImage: foundCatalog.coverImage,
+        rating: foundCatalog.rating,
+        reviewsCount: foundCatalog.reviewsCount,
+        category: foundCatalog.categoryLabel || foundCatalog.category,
+      }
     }
     const foundTrending = TRENDING_BOOKS.find((b) => b.id === selectedBookId)
     if (foundTrending) {
@@ -182,7 +225,25 @@ export default function App() {
     )
   }
 
-  // 3. Book Detail Page View
+  // 3. Catalog Page View (The Catalog)
+  if (currentView === 'catalog' || currentView === 'katalog') {
+    return (
+      <div className="min-h-screen flex flex-col bg-[#FAF7F2] text-[#1E2621]">
+        {/* Navigation Bar */}
+        {renderNavbar('catalog')}
+
+        {/* Catalog Main Content */}
+        <CatalogPage
+          onNavigateHome={() => navigateTo('home')}
+          onNavigateBookDetail={(id) => navigateTo('book-detail', id)}
+          onNavigateAuthor={(authorId) => navigateTo('author-detail', authorId || 'julian-cross')}
+          initialCategory={selectedCategory}
+        />
+      </div>
+    )
+  }
+
+  // 4. Book Detail Page View
   if (currentView === 'book-detail') {
     return (
       <div className="min-h-screen flex flex-col bg-[#FCF9F3] text-[#1C1C18]">
@@ -197,7 +258,7 @@ export default function App() {
             onNavigateAuthor={(authorId) => navigateTo('author-detail', authorId || 'julian-cross')}
             onNavigateCategory={(cat) => {
               setSelectedCategory(cat)
-              navigateTo('home')
+              navigateTo('catalog')
             }}
             onNavigateRegister={() => navigateTo('register')}
           />
@@ -209,7 +270,7 @@ export default function App() {
     )
   }
 
-  // 4. Authors Directory Page View (Rekomendasi Penulis Terbaik & Populer)
+  // 5. Authors Directory Page View (Rekomendasi Penulis Terbaik & Populer)
   if (currentView === 'authors') {
     return (
       <div className="min-h-screen flex flex-col bg-[#FCF9F3] text-[#1C1C18]">
@@ -231,7 +292,7 @@ export default function App() {
     )
   }
 
-  // 5. Author Detail Page View (Detail Profil Penulis Spesifik)
+  // 6. Author Detail Page View (Detail Profil Penulis Spesifik)
   if (currentView === 'author-detail' || currentView === 'author') {
     return (
       <div className="min-h-screen flex flex-col bg-[#FCF9F3] text-[#1C1C18]">
@@ -254,7 +315,7 @@ export default function App() {
     )
   }
 
-  // 6. User Profile Page View
+  // 7. User Profile Page View
   if (currentView === 'profile') {
     return (
       <div className="min-h-screen flex flex-col bg-[#FCF9F3] text-[#1C1C18]">
@@ -285,7 +346,7 @@ export default function App() {
     )
   }
 
-  // 7. Home / Landing Page View
+  // 8. Home / Landing Page View
   return (
     <div className="min-h-screen flex flex-col bg-[#FCF9F3] text-[#1C1C18]">
       {/* Top Navigation */}
@@ -303,7 +364,10 @@ export default function App() {
         {/* Category Filter Pills Bar */}
         <CategoryFilterPills
           selectedCategory={selectedCategory}
-          onSelectCategory={handleSelectCategory}
+          onSelectCategory={(cat) => {
+            handleSelectCategory(cat)
+            navigateTo('catalog')
+          }}
         />
 
         {/* Trending / Highly Rated Books */}
@@ -311,17 +375,20 @@ export default function App() {
           activeCategory={selectedCategory} 
           onNavigateBookDetail={(id) => navigateTo('book-detail', id)}
           onNavigateAuthor={(authorId) => navigateTo('author-detail', authorId || 'julian-cross')}
+          onNavigateCatalog={() => navigateTo('catalog')}
         />
 
         {/* Curated Editorial Collections */}
-        <CuratedCollectionsSection />
+        <CuratedCollectionsSection
+          onNavigateCatalog={() => navigateTo('catalog')}
+        />
 
         {/* Recent Community Reviews */}
         <ReviewsSection />
       </main>
 
       {/* Footer */}
-      <Footer />
+      <Footer onNavigateCatalog={() => navigateTo('catalog')} />
     </div>
   )
 }

@@ -2,19 +2,31 @@ import React from 'react'
 import { ArrowRight } from 'lucide-react'
 import { CURATED_COLLECTIONS } from '../data/mockData'
 
-export default function CuratedCollectionsSection() {
+export default function CuratedCollectionsSection({ onNavigateCatalog }) {
   return (
     <section id="collections" className="w-full bg-[#FAF7F2] py-14 md:py-18 border-y border-[#ECE4D8]">
       <div className="max-w-[1280px] mx-auto px-6 md:px-8">
         
         {/* Section Header */}
-        <div className="mb-8">
-          <span className="text-xs uppercase tracking-wider text-[#835418] font-semibold">
-            Editorial Kurasi
-          </span>
-          <h2 className="font-serif text-2xl sm:text-3xl font-medium text-[#192F23] mt-1">
-            Koleksi Pilihan Pembaca
-          </h2>
+        <div className="mb-8 flex justify-between items-end">
+          <div>
+            <span className="text-xs uppercase tracking-wider text-[#835418] font-semibold">
+              Editorial Kurasi
+            </span>
+            <h2 className="font-serif text-2xl sm:text-3xl font-medium text-[#192F23] mt-1">
+              Koleksi Pilihan Pembaca
+            </h2>
+          </div>
+          {onNavigateCatalog && (
+            <button
+              type="button"
+              onClick={onNavigateCatalog}
+              className="text-xs font-medium text-[#192F23] hover:underline flex items-center gap-1 cursor-pointer"
+            >
+              <span>Lihat Katalog Lengkap</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </button>
+          )}
         </div>
 
         {/* Collections Cards Grid */}
@@ -22,6 +34,7 @@ export default function CuratedCollectionsSection() {
           {CURATED_COLLECTIONS.map((item) => (
             <div
               key={item.id}
+              onClick={() => onNavigateCatalog && onNavigateCatalog()}
               className="relative h-80 rounded-xl overflow-hidden group flex flex-col justify-end p-6 border border-[#DFD5C7] shadow-sm hover:shadow-md transition-shadow cursor-pointer"
             >
               {/* Background Cover Image */}
