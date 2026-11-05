@@ -1,3 +1,5 @@
+const { mapCategories } = require('../config/categoryMap');
+
 const BASE_URL = 'https://www.googleapis.com/books/v1/volumes';
 
 // Mengubah format Google Books menjadi format yang cocok dengan tabel kita
@@ -15,7 +17,7 @@ function mapVolume(item) {
     google_average_rating: info.averageRating ?? null,
     google_ratings_count: info.ratingsCount ?? null,
     authors: info.authors || [],
-    categories: info.categories || [],
+    categories: mapCategories(info.categories || []),
     isbns: (info.industryIdentifiers || []).map((i) => i.identifier),
   };
 }

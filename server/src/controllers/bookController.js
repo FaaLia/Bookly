@@ -1,6 +1,7 @@
 const pool = require('../config/db');
 const { searchBooks } = require('../services/googleBooks');
 const { getOrImportBook } = require('../services/bookService');
+const { labelForSlug } = require('../config/categoryMap');
 
 function parsePaging(query, maxLimit) {
   const page = Math.max(parseInt(query.page, 10) || 1, 1);
@@ -43,7 +44,7 @@ exports.list = async (req, res) => {
     let filter = '';
 
     if (req.query.category) {
-      params.push(req.query.category);
+      params.push(labelForSlug(req.query.category) || req.query.category);
       filter = `WHERE EXISTS (
         SELECT 1 FROM book_categories bc
         JOIN categories c ON c.category_id = bc.category_id
