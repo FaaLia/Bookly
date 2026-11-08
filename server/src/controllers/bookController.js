@@ -55,7 +55,13 @@ exports.list = async (req, res) => {
 
     const orders = {
       newest: 'created_at DESC',
-      rating: 'COALESCE(average_rating, google_average_rating) DESC NULLS LAST, title ASC',
+      rating: `(CASE
+                  WHEN reviews_count > 0
+                    THEN (reviews_count * average_rating + 10 * 3.5) / (reviews_count + 10)
+                  WHEN google_average_rating IS NOT NULL
+                    THEN (COALESCE(google_ratings_count, 0) * google_average_rating + 10 * 3.5)
+                         / (COALESCE(google_ratings_count, 0) + 10)
+                END) DESC NULLS LAST, title ASC`,
       title: 'title ASC',
     };
     const orderBy = orders[req.query.sort] || orders.newest;

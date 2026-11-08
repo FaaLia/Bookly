@@ -5,8 +5,10 @@ Base URL (lokal): `http://localhost:5000`
 ## Buku
 
 ### GET /api/books
-Daftar koleksi buku yang tersimpan (untuk homepage).
-Query: `page` (default 1), `limit` (default 20, maks 50), `category` (nama kategori, opsional).
+Daftar koleksi buku (beranda, katalog, filter).
+Query: `page` (default 1), `limit` (default 20, maks 50),
+`category` (salah satu slug dari /api/categories),
+`sort` (`newest` default, `rating`, atau `title`).
 
 ```json
 {
@@ -20,10 +22,23 @@ Query: `page` (default 1), `limit` (default 20, maks 50), `category` (nama kateg
       "cover_image": "https://...",
       "published_date": "2008-11-01",
       "authors": ["Andrea Hirata"],
-      "average_rating": null
+      "categories": ["Fiksi Sastra"],
+      "rating": 3.5,
+      "ratings_count": 34,
+      "rating_source": "google",
+      "average_rating": null,
+      "reviews_count": 0,
+      "google_average_rating": 3.5,
+      "google_ratings_count": 34
     }
   ]
 }
+```
+
+- `rating` dan `ratings_count` sudah siap pakai: rating review Bookly kalau sudah ada, kalau belum rating Google. `rating_source` bernilai `"bookly"`, `"google"`, atau `null`.
+- `rating` bisa `null` untuk buku tanpa rating sama sekali.
+- `sort=rating` mengurutkan dengan rating tertimbang (buku dengan sedikit rating tidak otomatis di atas), jadi cocok untuk bagian "Trending" atau "Terpopuler".
+- `published_date` bisa berupa tahun saja (`"1962"`) atau tanggal lengkap. Ambil 4 karakter pertama untuk tahun.
 ```
 
 ### GET /api/books/search?q=laskar+pelangi

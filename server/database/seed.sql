@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
-\restrict yiEnDthamcb7W7EDd0weIhHYEQZpuGKKmC6syEwBgVYzEkfFIbcbHMjeKfxImEw
+\restrict WX9lXdgmujtjqgsMrL2ZmclPBbeXMYviMroedgQ5WNs7sjkgBjnw9I9bcUTrY23
 
 -- Dumped from database version 18.6
 -- Dumped by pg_dump version 18.6
@@ -230,5 +230,5 @@ SELECT pg_catalog.setval('public.categories_category_id_seq', 52, true);
 -- PostgreSQL database dump complete
 --
 
-\unrestrict yiEnDthamcb7W7EDd0weIhHYEQZpuGKKmC6syEwBgVYzEkfFIbcbHMjeKfxImEw
+\unrestrict WX9lXdgmujtjqgsMrL2ZmclPBbeXMYviMroedgQ5WNs7sjkgBjnw9I9bcUTrY23
 
