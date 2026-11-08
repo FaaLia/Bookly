@@ -139,7 +139,10 @@ Gunakan `book_id` untuk review, favorit, dan reading list.
   "authors": ["Andrea Hirata"],
   "categories": ["Fiksi Sastra"],
   "average_rating": null,
-  "reviews_count": 0
+  "reviews_count": 0,
+  "rating": 3.5,
+  "ratings_count": 35,
+  "rating_source": "google"
 }
 ```
 
