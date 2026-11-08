@@ -18,7 +18,9 @@ function mapVolume(item) {
     google_ratings_count: info.ratingsCount ?? null,
     authors: info.authors || [],
     categories: mapCategories(info.categories || []),
+    google_categories: info.categories || [],
     isbns: (info.industryIdentifiers || []).map((i) => i.identifier),
+    language: info.language || null,
   };
 }
 

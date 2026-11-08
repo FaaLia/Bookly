@@ -24,7 +24,7 @@ async function findBookByApiId(apiBookId) {
      WHERE b.api_book_id = $1`,
     [apiBookId]
   );
-  return rows[0] || null;
+    return rows[0] ? withRating(rows[0]) : null;
 }
 
 // Simpan buku hasil Google Books + penulis + kategorinya dalam satu transaksi
@@ -113,4 +113,15 @@ async function getOrImportBook(apiBookId) {
   return findBookByApiId(apiBookId);
 }
 
-module.exports = { findBookByApiId, saveBook, getOrImportBook };
+// Gabungkan rating: pakai rating review Bookly kalau ada, kalau belum pakai rating Google
+function withRating(book) {
+  const own = book.reviews_count > 0;
+  return {
+    ...book,
+    rating: own ? book.average_rating : book.google_average_rating,
+    ratings_count: own ? book.reviews_count : book.google_ratings_count,
+    rating_source: own ? 'bookly' : book.google_average_rating != null ? 'google' : null,
+  };
+}
+
+module.exports = { findBookByApiId, saveBook, getOrImportBook, withRating };

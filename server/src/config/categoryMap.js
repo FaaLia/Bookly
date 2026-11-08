@@ -14,7 +14,7 @@ const RULES = [
   { slug: 'poetry', pattern: /poet|poem|puisi/i },
   // "fiction" tapi bukan "nonfiction" / "non-fiction"
   { slug: 'literary-fiction', pattern: /(?<!non-?)fiction|novel|short stories|sastra|cerita/i },
-  { slug: 'philosophy', pattern: /philosoph|essay|ethic|filsafat|esai/i },
+  { slug: 'philosophy', pattern: /philosoph|essay|ethic|literary criticism|filsafat|esai/i },
   { slug: 'history', pattern: /histor|\bwars?\b|military|sejarah/i },
   { slug: 'art-design', pattern: /\barts?\b|design|architecture|photograph|music|film|motion picture|painting|\bcrafts?\b/i },
   { slug: 'non-fiction', pattern: /social science|political science|computer|business|biograph|self-help|psycholog|religio/i },
