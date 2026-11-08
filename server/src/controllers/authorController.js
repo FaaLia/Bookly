@@ -48,3 +48,108 @@ exports.getDetail = async (req, res) => {
     res.status(500).json({ message: 'Gagal mengambil detail penulis' });
   }
 };
+
+// POST /api/authors  { author_name, biography? }  (admin)
+exports.create = async (req, res) => {
+  try {
+    const name = (req.body.author_name || '').trim();
+    if (!name) return res.status(400).json({ message: 'author_name wajib diisi' });
+
+    const dup = await pool.query(
+      'SELECT 1 FROM authors WHERE lower(author_name) = lower($1)',
+      [name]
+    );
+    if (dup.rows.length > 0) {
+      return res.status(409).json({ message: 'Penulis dengan nama itu sudah ada' });
+    }
+
+    const biography = (req.body.biography || '').trim() || null;
+    const { rows } = await pool.query(
+      `INSERT INTO authors (author_name, biography)
+       VALUES ($1, $2)
+       RETURNING author_id, author_name, biography`,
+      [name.slice(0, 255), biography]
+    );
+    res.status(201).json(rows[0]);
+  } catch (err) {
+    if (err.code === '23505') {
+      return res.status(409).json({ message: 'Penulis dengan nama itu sudah ada' });
+    }
+    console.error(err);
+    res.status(500).json({ message: 'Gagal menambah penulis' });
+  }
+};
+
+// PUT /api/authors/:id  { author_name?, biography? }  (admin)
+exports.update = async (req, res) => {
+  try {
+    const id = parseInt(req.params.id, 10);
+    if (!id) return res.status(400).json({ message: 'ID tidak valid' });
+
+    const found = await pool.query('SELECT * FROM authors WHERE author_id = $1', [id]);
+    const author = found.rows[0];
+    if (!author) return res.status(404).json({ message: 'Penulis tidak ditemukan' });
+
+    let name = author.author_name;
+    if (req.body.author_name !== undefined) {
+      name = (req.body.author_name || '').trim();
+      if (!name) return res.status(400).json({ message: 'author_name tidak boleh kosong' });
+    }
+    const biography =
+      req.body.biography !== undefined
+        ? (req.body.biography || '').trim() || null
+        : author.biography;
+
+    const dup = await pool.query(
+      'SELECT 1 FROM authors WHERE lower(author_name) = lower($1) AND author_id <> $2',
+      [name, id]
+    );
+    if (dup.rows.length > 0) {
+      return res.status(409).json({ message: 'Penulis dengan nama itu sudah ada' });
+    }
+
+    const { rows } = await pool.query(
+      `UPDATE authors SET author_name = $1, biography = $2
+       WHERE author_id = $3
+       RETURNING author_id, author_name, biography`,
+      [name.slice(0, 255), biography, id]
+    );
+    res.json(rows[0]);
+  } catch (err) {
+    if (err.code === '23505') {
+      return res.status(409).json({ message: 'Penulis dengan nama itu sudah ada' });
+    }
+    console.error(err);
+    res.status(500).json({ message: 'Gagal mengubah penulis' });
+  }
+};
+
+// DELETE /api/authors/:id  (admin)
+exports.remove = async (req, res) => {
+  try {
+    const id = parseInt(req.params.id, 10);
+    if (!id) return res.status(400).json({ message: 'ID tidak valid' });
+
+    const linked = await pool.query(
+      'SELECT COUNT(*)::int AS n FROM book_authors WHERE author_id = $1',
+      [id]
+    );
+    if (linked.rows[0].n > 0) {
+      return res.status(409).json({
+        message: `Penulis masih terhubung ke ${linked.rows[0].n} buku`,
+      });
+    }
+
+    const result = await pool.query('DELETE FROM authors WHERE author_id = $1', [id]);
+    if (result.rowCount === 0) {
+      return res.status(404).json({ message: 'Penulis tidak ditemukan' });
+    }
+    res.json({ message: 'Penulis dihapus' });
+  } catch (err) {
+    if (err.code === '23503') {
+      return res.status(409).json({ message: 'Penulis masih terhubung ke buku, lepaskan dulu' });
+    }
+    console.error(err);
+    res.status(500).json({ message: 'Gagal menghapus penulis' });
+  }
+};
