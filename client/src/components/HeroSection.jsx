@@ -1,5 +1,5 @@
 import React from 'react'
-import { Star, Bookmark, BookOpen, User } from 'lucide-react'
+import { Bookmark, BookOpen, User } from 'lucide-react'
 import { HERO_BOOK } from '../data/mockData'
 
 export default function HeroSection({ onNavigateRegister, onNavigateBookDetail, onNavigateAuthor }) {
@@ -16,7 +16,7 @@ export default function HeroSection({ onNavigateRegister, onNavigateBookDetail, 
             </div>
 
             {/* Main Title */}
-            <h1 className="font-serif text-3xl sm:text-4xl lg:text-[48px] lg:leading-[56px] font-normal tracking-tight text-[#192F23] mb-4">
+            <h1 className="font-serif text-3xl sm:text-4xl lg:text-[48px] lg:leading-[56px] font-normal tracking-tight text-[#483E37] mb-4">
               {HERO_BOOK.title}
             </h1>
 
@@ -27,21 +27,14 @@ export default function HeroSection({ onNavigateRegister, onNavigateBookDetail, 
 
             {/* Author & Rating Row */}
             <div className="flex flex-wrap items-center gap-3 mb-6 text-sm text-[#424844]">
-              <span className="font-medium text-[#192F23]">
+              <span className="font-medium text-[#483E37]">
                 {HERO_BOOK.author}
               </span>
               <span className="text-[#C2C8C2]">•</span>
-              
-              {/* 5 Stars */}
-              <div className="flex items-center gap-0.5 text-[#835418]">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-3.5 h-3.5 fill-[#835418] text-[#835418]" />
-                ))}
-              </div>
 
               {/* Rating text */}
               <span className="text-xs text-[#737973]">
-                {HERO_BOOK.rating} ({HERO_BOOK.reviewsCount} ulasan)
+                Rating {HERO_BOOK.rating} ({HERO_BOOK.reviewsCount} ulasan)
               </span>
             </div>
 
@@ -50,7 +43,7 @@ export default function HeroSection({ onNavigateRegister, onNavigateBookDetail, 
               <button 
                 type="button"
                 onClick={() => onNavigateBookDetail && onNavigateBookDetail(HERO_BOOK.id)}
-                className="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-[#192F23] hover:bg-[#13241b] text-white font-sans text-sm font-medium rounded-lg transition-colors cursor-pointer"
+                className="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-[#483E37] hover:bg-[#3D342E] text-white font-sans text-sm font-medium rounded-lg transition-colors cursor-pointer"
               >
                 <BookOpen className="w-4 h-4" />
                 <span>Baca Sinopsis</span>
@@ -59,7 +52,7 @@ export default function HeroSection({ onNavigateRegister, onNavigateBookDetail, 
               <button 
                 type="button"
                 onClick={() => onNavigateAuthor && onNavigateAuthor('julian-cross')}
-                className="inline-flex items-center justify-center gap-2 px-4 py-2.5 border border-[#DFD5C7] hover:border-[#192F23] bg-white text-[#192F23] font-sans text-sm font-medium rounded-lg transition-colors cursor-pointer"
+                className="inline-flex items-center justify-center gap-2 px-4 py-2.5 border border-[#DFD5C7] hover:border-[#483E37] bg-white text-[#483E37] font-sans text-sm font-medium rounded-lg transition-colors cursor-pointer"
               >
                 <User className="w-4 h-4 text-[#835418]" />
                 <span>Lihat Profil Penulis</span>
@@ -68,7 +61,7 @@ export default function HeroSection({ onNavigateRegister, onNavigateBookDetail, 
               <button 
                 type="button"
                 onClick={onNavigateRegister}
-                className="inline-flex items-center justify-center gap-2 px-4 py-2.5 border border-[#DFD5C7] hover:border-[#192F23] bg-white text-[#737973] hover:text-[#192F23] font-sans text-sm font-medium rounded-lg transition-colors cursor-pointer"
+                className="inline-flex items-center justify-center gap-2 px-4 py-2.5 border border-[#DFD5C7] hover:border-[#483E37] bg-white text-[#737973] hover:text-[#483E37] font-sans text-sm font-medium rounded-lg transition-colors cursor-pointer"
               >
                 <Bookmark className="w-4 h-4" />
                 <span>Simpan ke Rak</span>

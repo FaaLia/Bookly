@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Search, Menu, X, User, LogOut } from 'lucide-react'
+import { Search, Menu, X, User, LogOut, Users } from 'lucide-react'
 
 export default function Navbar({
   onSearchChange,
@@ -8,6 +8,7 @@ export default function Navbar({
   onNavigateHome,
   onNavigateCatalog,
   onNavigateAuthor,
+  onNavigateCommunity,
   onNavigateProfile,
   onLogout,
   isLoggedIn = false,
@@ -38,37 +39,37 @@ export default function Navbar({
   }
 
   return (
-    <header className="sticky top-0 z-50 bg-[#FAF7F2]/95 backdrop-blur-md border-b border-[#ECE7DF] h-[81px]">
+    <header className="sticky top-0 z-50 bg-[#483E37]/95 backdrop-blur-md border-b border-[#5C4F46] h-[81px] transition-colors shadow-sm">
       <div className="max-w-[1280px] mx-auto px-6 h-20 flex items-center justify-between gap-6">
         
-        {/* Brand Logo: Font Serif Elegan tanpa titik oranye - Langsung balik ke Beranda paling atas */}
+        {/* Brand Logo: Warna warm ivory/cream disesuaikan dengan header taupe agar kontras & tidak nabrak */}
         <a
           href="#/"
           onClick={handleGoHome}
           className="flex items-center cursor-pointer flex-shrink-0 group"
           title="Kembali ke Beranda"
         >
-          <span className="font-serif text-[30px] leading-9 font-medium tracking-tight text-[#1E2621]">
+          <span className="font-serif text-[30px] leading-9 font-medium tracking-tight text-[#FAF7F2] group-hover:text-[#E8DFD3] transition-colors">
             Bookly
           </span>
         </a>
 
         {/* Navigasi Tengah bergaya Pill / Tab - Desktop */}
         <nav className="hidden lg:flex items-center gap-1.5 text-sm font-sans font-medium">
-          {/* Link 1: Populer / Beranda - Langsung buka halaman beranda paling atas */}
+          {/* Link 1: Populer / Beranda */}
           <a
             href="#/"
             onClick={handleGoHome}
             className={`transition-all cursor-pointer ${
               activeNav === 'home'
-                ? 'px-5 py-2 bg-[#1B2820] text-white shadow-[0px_1px_2px_rgba(0,0,0,0.05)] rounded-full'
-                : 'px-4 py-2 text-[#4A4742] hover:bg-[#EEE9E0] rounded-full'
+                ? 'px-5 py-2 bg-[#FAF7F2] text-[#483E37] font-semibold shadow-sm rounded-full'
+                : 'px-4 py-2 text-[#E2DDD5] hover:text-white hover:bg-white/10 rounded-full'
             }`}
           >
             Populer
           </a>
 
-          {/* Link 2: Katalog (Active on Catalog Page) */}
+          {/* Link 2: Katalog */}
           <a
             href="#/catalog"
             onClick={(e) => {
@@ -77,8 +78,8 @@ export default function Navbar({
             }}
             className={`transition-all cursor-pointer ${
               activeNav === 'catalog'
-                ? 'px-5 py-2 bg-[#1B2820] text-white shadow-[0px_1px_2px_rgba(0,0,0,0.05)] rounded-full'
-                : 'px-4 py-2 text-[#4A4742] hover:bg-[#EEE9E0] rounded-full'
+                ? 'px-5 py-2 bg-[#FAF7F2] text-[#483E37] font-semibold shadow-sm rounded-full'
+                : 'px-4 py-2 text-[#E2DDD5] hover:text-white hover:bg-white/10 rounded-full'
             }`}
           >
             Katalog
@@ -93,45 +94,41 @@ export default function Navbar({
             }}
             className={`transition-all cursor-pointer ${
               activeNav === 'author'
-                ? 'px-5 py-2 bg-[#1B2820] text-white shadow-[0px_1px_2px_rgba(0,0,0,0.05)] rounded-full'
-                : 'px-4 py-2 text-[#4A4742] hover:bg-[#EEE9E0] rounded-full'
+                ? 'px-5 py-2 bg-[#FAF7F2] text-[#483E37] font-semibold shadow-sm rounded-full'
+                : 'px-4 py-2 text-[#E2DDD5] hover:text-white hover:bg-white/10 rounded-full'
             }`}
           >
             Penulis
           </a>
 
-          {/* Link 4: Ulasan */}
+          {/* Link 4: Komunitas (Menggantikan Ulasan) */}
           <a
-            href="#reviews"
+            href="#/community"
             onClick={(e) => {
               e.preventDefault()
-              handleNavClick(onNavigateHome)
-              setTimeout(() => {
-                const el = document.getElementById('reviews')
-                if (el) el.scrollIntoView({ behavior: 'smooth' })
-              }, 100)
+              handleNavClick(onNavigateCommunity)
             }}
             className={`transition-all cursor-pointer ${
-              activeNav === 'reviews'
-                ? 'px-5 py-2 bg-[#1B2820] text-white shadow-[0px_1px_2px_rgba(0,0,0,0.05)] rounded-full'
-                : 'px-4 py-2 text-[#4A4742] hover:bg-[#EEE9E0] rounded-full'
+              activeNav === 'community'
+                ? 'px-5 py-2 bg-[#FAF7F2] text-[#483E37] font-semibold shadow-sm rounded-full'
+                : 'px-4 py-2 text-[#E2DDD5] hover:text-white hover:bg-white/10 rounded-full'
             }`}
           >
-            Ulasan
+            Komunitas
           </a>
         </nav>
 
         {/* Search Pill & Profil Avatar - Desktop */}
         <div className="hidden sm:flex items-center gap-3">
-          {/* Search Pill */}
-          <div className="w-[288px] h-8 bg-[#EEE9E0] rounded-full px-3.5 flex items-center gap-2">
-            <Search className="w-[13.5px] h-[13.5px] text-[#7A7670] flex-shrink-0" />
+          {/* Search Pill - Disesuaikan dengan nuansa taupe */}
+          <div className="w-[288px] h-9 bg-[#5A4F46] border border-[#6B5E53] rounded-full px-3.5 flex items-center gap-2 focus-within:border-[#FAF7F2]/60 focus-within:bg-[#62554B] transition-colors">
+            <Search className="w-[13.5px] h-[13.5px] text-[#C4B9AD] flex-shrink-0" />
             <input
               type="text"
               value={searchValue}
               onChange={handleSearch}
-              placeholder="Cari ulasan, buku..."
-              className="w-full bg-transparent font-sans text-xs text-[#1E2621] placeholder-[#88837A] focus:outline-none"
+              placeholder="Cari buku, klub, komunitas..."
+              className="w-full bg-transparent font-sans text-xs text-[#FAF7F2] placeholder-[#C4B9AD] focus:outline-none"
             />
           </div>
 
@@ -147,7 +144,7 @@ export default function Navbar({
                 }
               }}
               aria-label="Profil Pengguna"
-              className="w-9 h-9 rounded-full bg-[#1B2820] hover:bg-[#25392D] flex items-center justify-center text-white transition-colors cursor-pointer shadow-sm overflow-hidden"
+              className="w-9 h-9 rounded-full bg-[#5A4F46] hover:bg-[#685B51] border border-[#6B5E53] flex items-center justify-center text-[#FAF7F2] transition-colors cursor-pointer shadow-sm overflow-hidden"
             >
               {isLoggedIn && userAvatar ? (
                 <img
@@ -156,15 +153,15 @@ export default function Navbar({
                   className="w-full h-full object-cover"
                 />
               ) : (
-                <User className="w-[14px] h-[14px] text-white" />
+                <User className="w-[14px] h-[14px] text-[#FAF7F2]" />
               )}
             </button>
 
             {/* Profile Dropdown for Logged-In User */}
             {isLoggedIn && profileDropdownOpen && (
-              <div className="absolute right-0 mt-2 w-48 bg-[#FAF7F2] border border-[#E8DFD3] rounded-xl shadow-lg py-1.5 z-50">
+              <div className="absolute right-0 mt-2 w-48 bg-[#FAF7F2] border border-[#DFD5C7] rounded-xl shadow-xl py-1.5 z-50">
                 <div className="px-4 py-2 border-b border-[#ECE7DF]">
-                  <p className="text-xs font-semibold text-[#1E2621]">{userName}</p>
+                  <p className="text-xs font-semibold text-[#2E2722]">{userName}</p>
                   <p className="text-[11px] text-[#736E65]">Pembaca Aktif</p>
                 </div>
                 <button
@@ -173,7 +170,7 @@ export default function Navbar({
                     setProfileDropdownOpen(false)
                     if (onNavigateProfile) onNavigateProfile()
                   }}
-                  className="w-full px-4 py-2 text-left text-xs text-[#1E2621] hover:bg-[#EEE9E0] flex items-center gap-2 cursor-pointer transition-colors"
+                  className="w-full px-4 py-2 text-left text-xs text-[#2E2722] hover:bg-[#EEE9E0] flex items-center gap-2 cursor-pointer transition-colors"
                 >
                   <User className="w-3.5 h-3.5 text-[#736E65]" />
                   <span>Lihat Profil</span>
@@ -199,7 +196,7 @@ export default function Navbar({
           <button
             type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-2 text-[#1E2621] hover:bg-[#EEE9E0] rounded-lg transition-colors cursor-pointer"
+            className="p-2 text-[#FAF7F2] hover:bg-white/10 rounded-lg transition-colors cursor-pointer"
             aria-label="Toggle menu"
           >
             {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -209,15 +206,15 @@ export default function Navbar({
 
       {/* Mobile Menu Drawer */}
       {mobileMenuOpen && (
-        <div className="lg:hidden border-t border-[#ECE7DF] bg-[#FAF7F2] px-6 py-4 flex flex-col gap-4 shadow-lg">
-          <div className="w-full h-9 bg-[#EEE9E0] rounded-full px-3.5 flex items-center gap-2">
-            <Search className="w-4 h-4 text-[#7A7670] flex-shrink-0" />
+        <div className="lg:hidden border-t border-[#5C4F46] bg-[#483E37] px-6 py-4 flex flex-col gap-4 shadow-xl">
+          <div className="w-full h-9 bg-[#5A4F46] border border-[#6B5E53] rounded-full px-3.5 flex items-center gap-2">
+            <Search className="w-4 h-4 text-[#C4B9AD] flex-shrink-0" />
             <input
               type="text"
               value={searchValue}
               onChange={handleSearch}
-              placeholder="Cari ulasan, buku..."
-              className="w-full bg-transparent font-sans text-xs text-[#1E2621] placeholder-[#88837A] focus:outline-none"
+              placeholder="Cari buku, klub, komunitas..."
+              className="w-full bg-transparent font-sans text-xs text-[#FAF7F2] placeholder-[#C4B9AD] focus:outline-none"
             />
           </div>
 
@@ -227,8 +224,8 @@ export default function Navbar({
               onClick={handleGoHome}
               className={`px-3 py-2 rounded-lg transition-colors cursor-pointer ${
                 activeNav === 'home'
-                  ? 'bg-[#1B2820] text-white font-medium'
-                  : 'text-[#4A4742] hover:bg-[#EEE9E0]'
+                  ? 'bg-[#FAF7F2] text-[#483E37] font-semibold'
+                  : 'text-[#E2DDD5] hover:bg-white/10'
               }`}
             >
               Populer
@@ -242,8 +239,8 @@ export default function Navbar({
               }}
               className={`px-3 py-2 rounded-lg transition-colors cursor-pointer ${
                 activeNav === 'catalog'
-                  ? 'bg-[#1B2820] text-white font-medium'
-                  : 'text-[#4A4742] hover:bg-[#EEE9E0]'
+                  ? 'bg-[#FAF7F2] text-[#483E37] font-semibold'
+                  : 'text-[#E2DDD5] hover:bg-white/10'
               }`}
             >
               Katalog
@@ -257,30 +254,26 @@ export default function Navbar({
               }}
               className={`px-3 py-2 rounded-lg transition-colors cursor-pointer ${
                 activeNav === 'author'
-                  ? 'bg-[#1B2820] text-white font-medium'
-                  : 'text-[#4A4742] hover:bg-[#EEE9E0]'
+                  ? 'bg-[#FAF7F2] text-[#483E37] font-semibold'
+                  : 'text-[#E2DDD5] hover:bg-white/10'
               }`}
             >
               Penulis
             </a>
 
             <a
-              href="#reviews"
+              href="#/community"
               onClick={(e) => {
                 e.preventDefault()
-                handleNavClick(onNavigateHome)
-                setTimeout(() => {
-                  const el = document.getElementById('reviews')
-                  if (el) el.scrollIntoView({ behavior: 'smooth' })
-                }, 100)
+                handleNavClick(onNavigateCommunity)
               }}
               className={`px-3 py-2 rounded-lg transition-colors cursor-pointer ${
-                activeNav === 'reviews'
-                  ? 'bg-[#1B2820] text-white font-medium'
-                  : 'text-[#4A4742] hover:bg-[#EEE9E0]'
+                activeNav === 'community'
+                  ? 'bg-[#FAF7F2] text-[#483E37] font-semibold'
+                  : 'text-[#E2DDD5] hover:bg-white/10'
               }`}
             >
-              Ulasan
+              Komunitas
             </a>
 
             {isLoggedIn ? (
@@ -290,23 +283,23 @@ export default function Navbar({
                   e.preventDefault()
                   handleNavClick(onNavigateProfile)
                 }}
-                className={`px-3 py-2 rounded-lg border-t border-[#ECE7DF] mt-1 transition-colors cursor-pointer ${
+                className={`px-3 py-2 rounded-lg border-t border-[#5C4F46] mt-1 transition-colors cursor-pointer ${
                   activeNav === 'profile'
-                    ? 'bg-[#1B2820] text-white font-medium'
-                    : 'text-[#1E2621] hover:bg-[#EEE9E0]'
+                    ? 'bg-[#FAF7F2] text-[#483E37] font-semibold'
+                    : 'text-[#FAF7F2] hover:bg-white/10'
                 }`}
               >
                 Profil Saya
               </a>
             ) : (
-              <div className="flex gap-2 pt-2 border-t border-[#ECE7DF] mt-1">
+              <div className="flex gap-2 pt-2 border-t border-[#5C4F46] mt-1">
                 <button
                   type="button"
                   onClick={() => {
                     setMobileMenuOpen(false)
                     if (onNavigateLogin) onNavigateLogin()
                   }}
-                  className="flex-1 py-2 text-center text-xs font-medium text-[#1E2621] bg-[#EEE9E0] rounded-lg cursor-pointer"
+                  className="flex-1 py-2 text-center text-xs font-medium text-[#FAF7F2] bg-white/15 hover:bg-white/20 rounded-lg cursor-pointer transition-colors"
                 >
                   Masuk
                 </button>
@@ -316,7 +309,7 @@ export default function Navbar({
                     setMobileMenuOpen(false)
                     if (onNavigateRegister) onNavigateRegister()
                   }}
-                  className="flex-1 py-2 text-center text-xs font-medium text-white bg-[#1B2820] rounded-lg cursor-pointer"
+                  className="flex-1 py-2 text-center text-xs font-semibold text-[#483E37] bg-[#FAF7F2] hover:bg-white rounded-lg cursor-pointer transition-colors"
                 >
                   Daftar
                 </button>

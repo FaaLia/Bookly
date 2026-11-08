@@ -1,5 +1,4 @@
 import React from 'react'
-import { Star } from 'lucide-react'
 import { COMMUNITY_REVIEWS } from '../data/mockData'
 
 export default function ReviewsSection() {
@@ -13,7 +12,7 @@ export default function ReviewsSection() {
             <span className="text-xs uppercase tracking-wider text-[#835418] font-semibold">
               Ulasan Pembaca
             </span>
-            <h2 className="font-serif text-2xl sm:text-3xl font-medium text-[#192F23] mt-1">
+            <h2 className="font-serif text-2xl sm:text-3xl font-medium text-[#483E37] mt-1">
               Catatan & Refleksi Terbaru
             </h2>
           </div>
@@ -39,7 +38,7 @@ export default function ReviewsSection() {
               <div className="flex-1 min-w-0">
                 <div className="flex items-center justify-between gap-2 mb-1">
                   <div className="flex items-center gap-2 min-w-0">
-                    <span className="text-xs font-semibold text-[#192F23] truncate">
+                    <span className="text-xs font-semibold text-[#483E37] truncate">
                       {review.reviewerName}
                     </span>
                     <span className="text-xs text-[#737973]">•</span>
@@ -48,7 +47,7 @@ export default function ReviewsSection() {
                     </span>
                   </div>
                   <div className="flex items-center text-[#835418] text-xs">
-                    ★ <span className="ml-0.5 font-medium">{review.rating}</span>
+                    <span className="font-medium">Rating {review.rating}</span>
                   </div>
                 </div>
 

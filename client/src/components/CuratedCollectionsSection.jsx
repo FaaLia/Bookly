@@ -13,7 +13,7 @@ export default function CuratedCollectionsSection({ onNavigateCatalog }) {
             <span className="text-xs uppercase tracking-wider text-[#835418] font-semibold">
               Editorial Kurasi
             </span>
-            <h2 className="font-serif text-2xl sm:text-3xl font-medium text-[#192F23] mt-1">
+            <h2 className="font-serif text-2xl sm:text-3xl font-medium text-[#483E37] mt-1">
               Koleksi Pilihan Pembaca
             </h2>
           </div>
@@ -21,7 +21,7 @@ export default function CuratedCollectionsSection({ onNavigateCatalog }) {
             <button
               type="button"
               onClick={onNavigateCatalog}
-              className="text-xs font-medium text-[#192F23] hover:underline flex items-center gap-1 cursor-pointer"
+              className="text-xs font-medium text-[#483E37] hover:underline flex items-center gap-1 cursor-pointer"
             >
               <span>Lihat Katalog Lengkap</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -44,14 +44,14 @@ export default function CuratedCollectionsSection({ onNavigateCatalog }) {
                 className="absolute inset-0 w-full h-full object-cover group-hover:scale-103 transition-transform duration-700"
               />
 
-              {/* Natural warm gradient overlay */}
+              {/* Natural warm taupe gradient overlay */}
               <div 
-                className="absolute inset-0 bg-gradient-to-t from-[#192F23]/90 via-[#192F23]/40 to-transparent"
+                className="absolute inset-0 bg-gradient-to-t from-[#483E37]/90 via-[#483E37]/40 to-transparent"
               />
 
               {/* Card Content */}
               <div className="relative z-10 flex flex-col gap-1.5 text-white">
-                <span className="text-[11px] font-medium uppercase tracking-wider text-[#CFE9D7]">
+                <span className="text-[11px] font-medium uppercase tracking-wider text-[#EAE2DC]">
                   {item.badge}
                 </span>
 

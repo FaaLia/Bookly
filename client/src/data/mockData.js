@@ -242,7 +242,7 @@ export const COMMUNITY_REVIEWS = [
     bookAuthor: 'Julian Cross',
     reviewerName: 'Aditya Pratama',
     avatarInitial: 'A',
-    avatarBg: '#192F23',
+    avatarBg: '#483E37',
     rating: 5,
     coverImage: 'https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=400&auto=format&fit=crop',
     quote: 'Cross telah merangkai keajaiban prosa struktural yang luar biasa. Setiap kalimat terasa diukir dengan tangan dari kepedihan dan harapan.',

@@ -1,7 +1,6 @@
 import React, { useState, useMemo } from 'react'
 import {
   SlidersHorizontal,
-  Star,
   Check,
   ChevronDown,
   LayoutGrid,
@@ -160,7 +159,7 @@ export default function CatalogPage({
   ])
 
   return (
-    <div className="w-full bg-[#FAF7F2] text-[#1E2621] min-h-screen">
+    <div className="w-full bg-[#FAF7F2] text-[#2E2722] min-h-screen">
       <main className="max-w-[1280px] mx-auto flex flex-col items-center pb-20">
         
         {/* ========================================================================= */}
@@ -173,7 +172,7 @@ export default function CatalogPage({
               Arsip &amp; Kurasi
             </span>
 
-            <h1 className="font-serif text-[42px] sm:text-[48px] leading-[48px] tracking-[-1.2px] text-[#1E2621] font-normal">
+            <h1 className="font-serif text-[42px] sm:text-[48px] leading-[48px] tracking-[-1.2px] text-[#2E2722] font-normal">
               The Catalog
             </h1>
 
@@ -193,7 +192,7 @@ export default function CatalogPage({
                   onClick={() => setSelectedQuickCategory(cat.id)}
                   className={`h-7 px-4 py-1.5 rounded-full font-sans text-[12px] leading-4 font-medium transition-all cursor-pointer flex items-center justify-center ${
                     isActive
-                      ? 'bg-[#1B2820] text-white shadow-[0px_1px_2px_rgba(0,0,0,0.05)]'
+                      ? 'bg-[#483E37] text-white shadow-[0px_1px_2px_rgba(0,0,0,0.05)]'
                       : 'bg-[#EEE9E0] text-[#3D3A35] hover:bg-[#E5DFD4]'
                   }`}
                 >
@@ -217,15 +216,15 @@ export default function CatalogPage({
             {/* Sidebar Header: Filter Title & Reset */}
             <div className="w-full border-b border-[#ECE7DF] pb-3 flex flex-row justify-between items-center">
               <div className="flex flex-row items-center gap-2">
-                <SlidersHorizontal className="w-[15px] h-[15px] text-[#1B2820]" />
-                <h2 className="font-serif font-medium text-[18px] leading-7 text-[#1E2621]">
+                <SlidersHorizontal className="w-[15px] h-[15px] text-[#483E37]" />
+                <h2 className="font-serif font-medium text-[18px] leading-7 text-[#2E2722]">
                   Filter
                 </h2>
               </div>
               <button
                 type="button"
                 onClick={handleResetFilters}
-                className="font-sans font-normal text-[12px] leading-4 text-[#736E65] underline hover:text-[#1E2621] transition-colors cursor-pointer"
+                className="font-sans font-normal text-[12px] leading-4 text-[#736E65] underline hover:text-[#2E2722] transition-colors cursor-pointer"
               >
                 Reset
               </button>
@@ -250,8 +249,8 @@ export default function CatalogPage({
                         <div
                           className={`w-[18px] h-[18px] rounded flex items-center justify-center transition-colors ${
                             isChecked
-                              ? 'bg-[#1B2820] text-white'
-                              : 'bg-white border border-[#CEC6B8] group-hover:border-[#1B2820]'
+                              ? 'bg-[#483E37] text-white'
+                              : 'bg-white border border-[#CEC6B8] group-hover:border-[#483E37]'
                           }`}
                         >
                           {isChecked && <Check className="w-3.5 h-3.5 text-white stroke-[2.5]" />}
@@ -290,11 +289,10 @@ export default function CatalogPage({
                       }`}
                     >
                       <div className="flex flex-row items-center gap-1.5">
-                        <Star className="w-[12px] h-[12px] text-[#C98E28] fill-[#C98E28]" />
                         <span
                           className={`font-sans text-[12px] leading-4 ${
                             isSelected
-                              ? 'font-medium text-[#1E2621]'
+                              ? 'font-medium text-[#2E2722]'
                               : 'font-normal text-[#524E47]'
                           }`}
                         >
@@ -330,7 +328,7 @@ export default function CatalogPage({
                       onClick={() => setSelectedEra(item.id)}
                       className={`w-full h-7 px-3 rounded-lg flex flex-row justify-between items-center transition-colors cursor-pointer ${
                         isSelected
-                          ? 'bg-[#1B2820] text-white'
+                          ? 'bg-[#483E37] text-white'
                           : 'text-[#38342E] hover:bg-[#EEE9E0]/50'
                       }`}
                     >
@@ -370,7 +368,7 @@ export default function CatalogPage({
                       onClick={() => setSelectedFormat(item.id)}
                       className={`h-7 px-3 rounded-lg font-sans text-[12px] leading-4 transition-colors cursor-pointer ${
                         isSelected
-                          ? 'bg-[#1B2820] text-white font-medium'
+                          ? 'bg-[#483E37] text-white font-medium'
                           : 'bg-[#EEE9E0] text-[#38342E] font-normal hover:bg-[#E5DFD4]'
                       }`}
                     >
@@ -397,7 +395,7 @@ export default function CatalogPage({
                       onClick={() => setSelectedThickness(item.id)}
                       className={`flex-1 h-7 rounded-lg font-sans text-[12px] leading-4 transition-colors cursor-pointer text-center ${
                         isSelected
-                          ? 'bg-[#1B2820] text-white font-medium'
+                          ? 'bg-[#483E37] text-white font-medium'
                           : 'bg-[#EEE9E0] text-[#38342E] font-normal hover:bg-[#E5DFD4]'
                       }`}
                     >
@@ -419,7 +417,7 @@ export default function CatalogPage({
             <div className="w-full bg-[#FBF9F5] border border-[#E8E2D8] shadow-[0px_1px_2px_rgba(0,0,0,0.05)] rounded-[12px] px-5 py-3 mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
               {/* Left text */}
               <div className="flex flex-row items-center gap-2">
-                <h3 className="font-serif font-medium text-[18px] leading-7 text-[#1E2621]">
+                <h3 className="font-serif font-medium text-[18px] leading-7 text-[#2E2722]">
                   Menampilkan Buku
                 </h3>
                 <span className="font-sans text-[12px] leading-4 text-[#8C867C]">
@@ -458,12 +456,12 @@ export default function CatalogPage({
                             }}
                             className={`w-full px-3 py-1.5 text-left text-xs transition-colors flex items-center justify-between ${
                               sortBy === opt.id
-                                ? 'bg-[#FAF7F2] text-[#1E2621] font-medium'
+                                ? 'bg-[#FAF7F2] text-[#2E2722] font-medium'
                                 : 'text-[#524E47] hover:bg-[#FAF7F2]'
                             }`}
                           >
                             <span>{opt.label}</span>
-                            {sortBy === opt.id && <Check className="w-3 h-3 text-[#1B2820]" />}
+                            {sortBy === opt.id && <Check className="w-3 h-3 text-[#483E37]" />}
                           </button>
                         ))}
                       </div>
@@ -479,8 +477,8 @@ export default function CatalogPage({
                     aria-label="Tampilan Grid"
                     className={`p-1 rounded transition-colors cursor-pointer ${
                       viewMode === 'grid'
-                        ? 'bg-white text-[#1E2621] shadow-xs'
-                        : 'text-[#736E65] hover:text-[#1E2621]'
+                        ? 'bg-white text-[#2E2722] shadow-xs'
+                        : 'text-[#736E65] hover:text-[#2E2722]'
                     }`}
                   >
                     <LayoutGrid className="w-3.5 h-3.5" />
@@ -491,8 +489,8 @@ export default function CatalogPage({
                     aria-label="Tampilan Daftar"
                     className={`p-1 rounded transition-colors cursor-pointer ${
                       viewMode === 'list'
-                        ? 'bg-white text-[#1E2621] shadow-xs'
-                        : 'text-[#736E65] hover:text-[#1E2621]'
+                        ? 'bg-white text-[#2E2722] shadow-xs'
+                        : 'text-[#736E65] hover:text-[#2E2722]'
                     }`}
                   >
                     <List className="w-3.5 h-3.5" />
@@ -501,7 +499,7 @@ export default function CatalogPage({
               </div>
             </div>
 
-            {/* Grid Kartu Buku (Gaya Persis Bagian Trending & Rating Tertinggi di Gambar Referensi) */}
+            {/* Grid Kartu Buku */}
             {viewMode === 'grid' ? (
               <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-[22px]">
                 {filteredBooks.map((book) => (
@@ -523,7 +521,7 @@ export default function CatalogPage({
                     <div className="p-4 flex-1 flex flex-col justify-between">
                       {/* Title & Author */}
                       <div className="flex flex-col gap-0.5">
-                        <h3 className="font-serif font-semibold text-[16px] leading-[22px] text-[#1E2621] line-clamp-2 group-hover:text-[#13241b] transition-colors">
+                        <h3 className="font-serif font-semibold text-[16px] leading-[22px] text-[#2E2722] line-clamp-2 group-hover:text-[#3D342E] transition-colors">
                           {book.title}
                         </h3>
                         <p 
@@ -542,9 +540,8 @@ export default function CatalogPage({
                       {/* Divider & Rating info */}
                       <div className="border-t border-[#F0ECE4] pt-2 mt-auto flex flex-row justify-between items-center">
                         <div className="flex flex-row items-center gap-1">
-                          <Star className="w-[12px] h-[12px] text-[#C98E28] fill-[#C98E28]" />
-                          <span className="font-sans font-medium text-[12px] leading-4 text-[#1E2621]">
-                            {book.rating}
+                          <span className="font-sans font-medium text-[12px] leading-4 text-[#2E2722]">
+                            Rating {book.rating}
                           </span>
                         </div>
                         <span className="font-sans font-normal text-[12px] leading-4 text-[#8C867C]">
@@ -581,7 +578,7 @@ export default function CatalogPage({
                         <span className="text-[11px] text-[#8C867C]">• {book.pages} hlm</span>
                       </div>
 
-                      <h3 className="font-serif font-semibold text-lg text-[#1E2621] group-hover:text-[#13241b]">
+                      <h3 className="font-serif font-semibold text-lg text-[#2E2722] group-hover:text-[#3D342E]">
                         {book.title}
                       </h3>
                       <p className="font-sans text-xs text-[#736E65]">Oleh {book.author}</p>
@@ -592,9 +589,8 @@ export default function CatalogPage({
 
                     <div className="flex flex-col items-end gap-2 pr-2">
                       <div className="flex items-center gap-1">
-                        <Star className="w-3.5 h-3.5 text-[#C98E28] fill-[#C98E28]" />
-                        <span className="font-sans font-medium text-sm text-[#1E2621]">
-                          {book.rating}
+                        <span className="font-sans font-medium text-sm text-[#2E2722]">
+                          Rating {book.rating}
                         </span>
                       </div>
                       <span className="font-sans text-xs text-[#8C867C]">
@@ -602,7 +598,7 @@ export default function CatalogPage({
                       </span>
                       <button
                         type="button"
-                        className="mt-2 text-xs font-medium text-[#1E2621] bg-[#EEE9E0] px-3 py-1.5 rounded-lg group-hover:bg-[#1B2820] group-hover:text-white transition-colors"
+                        className="mt-2 text-xs font-medium text-[#2E2722] bg-[#EEE9E0] px-3 py-1.5 rounded-lg group-hover:bg-[#483E37] group-hover:text-white transition-colors"
                       >
                         Detail Buku
                       </button>
@@ -630,7 +626,7 @@ export default function CatalogPage({
                   onClick={() => setCurrentPage(1)}
                   className={`w-8 h-8 rounded-lg flex items-center justify-center font-sans text-[14px] leading-5 transition-colors cursor-pointer ${
                     currentPage === 1
-                      ? 'bg-[#1B2820] text-white font-medium'
+                      ? 'bg-[#483E37] text-white font-medium'
                       : 'text-[#524E47] hover:bg-[#EEE9E0]'
                   }`}
                 >
@@ -642,7 +638,7 @@ export default function CatalogPage({
                   onClick={() => setCurrentPage(2)}
                   className={`w-8 h-8 rounded-lg flex items-center justify-center font-sans text-[14px] leading-5 transition-colors cursor-pointer ${
                     currentPage === 2
-                      ? 'bg-[#1B2820] text-white font-medium'
+                      ? 'bg-[#483E37] text-white font-medium'
                       : 'text-[#524E47] hover:bg-[#EEE9E0]'
                   }`}
                 >
@@ -654,7 +650,7 @@ export default function CatalogPage({
                   onClick={() => setCurrentPage(3)}
                   className={`w-8 h-8 rounded-lg flex items-center justify-center font-sans text-[14px] leading-5 transition-colors cursor-pointer ${
                     currentPage === 3
-                      ? 'bg-[#1B2820] text-white font-medium'
+                      ? 'bg-[#483E37] text-white font-medium'
                       : 'text-[#524E47] hover:bg-[#EEE9E0]'
                   }`}
                 >
@@ -668,7 +664,7 @@ export default function CatalogPage({
                   onClick={() => setCurrentPage(12)}
                   className={`w-8 h-8 rounded-lg flex items-center justify-center font-sans text-[14px] leading-5 transition-colors cursor-pointer ${
                     currentPage === 12
-                      ? 'bg-[#1B2820] text-white font-medium'
+                      ? 'bg-[#483E37] text-white font-medium'
                       : 'text-[#524E47] hover:bg-[#EEE9E0]'
                   }`}
                 >
@@ -691,8 +687,8 @@ export default function CatalogPage({
                 onClick={() => setCurrentPage((p) => (p < 12 ? p + 1 : 1))}
                 className="h-8 px-5 rounded-lg bg-[#EEE9E0] hover:bg-[#E5DFD4] transition-colors flex flex-row items-center gap-2 cursor-pointer"
               >
-                <BookOpen className="w-3.5 h-3.5 text-[#1E2621]" />
-                <span className="font-sans font-medium text-[12px] leading-4 text-[#1E2621]">
+                <BookOpen className="w-3.5 h-3.5 text-[#2E2722]" />
+                <span className="font-sans font-medium text-[12px] leading-4 text-[#2E2722]">
                   Halaman Selanjutnya
                 </span>
               </button>
@@ -705,7 +701,7 @@ export default function CatalogPage({
       </main>
 
       {/* ========================================================================= */}
-      {/* 4. FOOTER (Identik dengan Gambar Referensi)                                */}
+      {/* 4. FOOTER                                                                 */}
       {/* ========================================================================= */}
       <footer className="w-full bg-[#FAF7F2] border-t border-[#ECE7DF] py-8">
         <div className="max-w-[1280px] mx-auto px-6 flex flex-col sm:flex-row justify-between items-center gap-4">
@@ -716,21 +712,21 @@ export default function CatalogPage({
             <a
               href="#privacy"
               onClick={(e) => e.preventDefault()}
-              className="font-sans font-normal text-[12px] leading-4 text-[#736E65] hover:text-[#1E2621] transition-colors"
+              className="font-sans font-normal text-[12px] leading-4 text-[#736E65] hover:text-[#2E2722] transition-colors"
             >
               Kebijakan Privasi
             </a>
             <a
               href="#terms"
               onClick={(e) => e.preventDefault()}
-              className="font-sans font-normal text-[12px] leading-4 text-[#736E65] hover:text-[#1E2621] transition-colors"
+              className="font-sans font-normal text-[12px] leading-4 text-[#736E65] hover:text-[#2E2722] transition-colors"
             >
               Syarat &amp; Ketentuan
             </a>
             <a
               href="#contact"
               onClick={(e) => e.preventDefault()}
-              className="font-sans font-normal text-[12px] leading-4 text-[#736E65] hover:text-[#1E2621] transition-colors"
+              className="font-sans font-normal text-[12px] leading-4 text-[#736E65] hover:text-[#2E2722] transition-colors"
             >
               Bantuan &amp; Kontak
             </a>

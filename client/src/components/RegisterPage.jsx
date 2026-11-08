@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { BookMarked, Eye, EyeOff, ArrowRight, ArrowLeft, Check, Feather, Sparkles } from 'lucide-react'
+import { BookMarked, Eye, EyeOff, ArrowRight, ArrowLeft, Check, Feather } from 'lucide-react'
 
 export default function RegisterPage({ onNavigateToLogin, onNavigateToHome, onRegisterSuccess }) {
   const [formData, setFormData] = useState({
@@ -27,8 +27,8 @@ export default function RegisterPage({ onNavigateToLogin, onNavigateToHome, onRe
 
     if (score <= 1) return { score: 1, label: 'Kekuatan: Lemah', color: 'bg-amber-600' }
     if (score === 2) return { score: 2, label: 'Kekuatan: Cukup', color: 'bg-amber-500' }
-    if (score === 3) return { score: 3, label: 'Kekuatan: Bagus', color: 'bg-emerald-600' }
-    return { score: 4, label: 'Kekuatan: Sangat Kuat', color: 'bg-[#192F23]' }
+    if (score === 3) return { score: 3, label: 'Kekuatan: Bagus', color: 'bg-[#68574B]' }
+    return { score: 4, label: 'Kekuatan: Sangat Kuat', color: 'bg-[#483E37]' }
   }
 
   const strength = getPasswordStrength(formData.password)
@@ -92,7 +92,7 @@ export default function RegisterPage({ onNavigateToLogin, onNavigateToHome, onRe
         {/* ========================================================= */}
         <section 
           aria-label="The Sanctuary"
-          className="relative w-full lg:w-[58%] bg-[#192F23] text-white flex flex-col justify-between p-8 sm:p-12 lg:p-16 overflow-hidden select-none isolation-auto"
+          className="relative w-full lg:w-[58%] bg-[#483E37] text-white flex flex-col justify-between p-8 sm:p-12 lg:p-16 overflow-hidden select-none isolation-auto"
         >
           {/* Atmospheric Backdrop Image with scrim */}
           <div 
@@ -106,13 +106,13 @@ export default function RegisterPage({ onNavigateToLogin, onNavigateToHome, onRe
           <div 
             className="absolute inset-0 pointer-events-none"
             style={{
-              background: 'linear-gradient(0deg, #192F23 0%, rgba(25, 47, 35, 0.6) 50%, rgba(25, 47, 35, 0.0) 100%)',
+              background: 'linear-gradient(0deg, #483E37 0%, rgba(72, 62, 55, 0.6) 50%, rgba(72, 62, 55, 0.0) 100%)',
             }}
           />
           <div 
             className="absolute inset-0 pointer-events-none"
             style={{
-              background: 'linear-gradient(90deg, rgba(25, 47, 35, 0.85) 0%, rgba(25, 47, 35, 0.3) 50%, rgba(25, 47, 35, 0.6) 100%)',
+              background: 'linear-gradient(90deg, rgba(72, 62, 55, 0.85) 0%, rgba(72, 62, 55, 0.3) 50%, rgba(72, 62, 55, 0.6) 100%)',
             }}
           />
 
@@ -130,7 +130,7 @@ export default function RegisterPage({ onNavigateToLogin, onNavigateToHome, onRe
             <button
               type="button"
               onClick={onNavigateToHome}
-              className="inline-flex items-center gap-2 text-xs font-sans tracking-wider uppercase text-[#99B2A1] hover:text-[#FFF8F5] transition-colors group"
+              className="inline-flex items-center gap-2 text-xs font-sans tracking-wider uppercase text-[#D6C8BE] hover:text-[#FFF8F5] transition-colors group"
             >
               <ArrowLeft className="w-3.5 h-3.5 transition-transform group-hover:-translate-x-1" />
               <span>Kembali ke Beranda</span>
@@ -152,7 +152,7 @@ export default function RegisterPage({ onNavigateToLogin, onNavigateToHome, onRe
 
             {/* Inspiring Literary Blockquote for Registration */}
             <blockquote className="font-serif italic font-normal text-3xl sm:text-4xl lg:text-[46px] lg:leading-[54px] tracking-tight text-[#FFF8F5] mb-8">
-              “Sebuah buku adalah pintu gerbang menuju semesta baru yang menunggumu untuk dijelajahi. Buka lembaran pertamamu di sini.”
+              â€œSebuah buku adalah pintu gerbang menuju semesta baru yang menunggumu untuk dijelajahi. Buka lembaran pertamamu di sini.â€
             </blockquote>
 
             {/* Author / Citation Container */}
@@ -165,9 +165,9 @@ export default function RegisterPage({ onNavigateToLogin, onNavigateToHome, onRe
               {/* Author Details */}
               <div className="flex flex-col">
                 <cite className="font-serif not-italic font-medium text-lg sm:text-xl text-white leading-snug">
-                  Carlos Ruiz Zafón
+                  Carlos Ruiz ZafÃ³n
                 </cite>
-                <span className="font-sans text-xs sm:text-sm text-[#99B2A1] leading-tight">
+                <span className="font-sans text-xs sm:text-sm text-[#D6C8BE] leading-tight">
                   Pengelana Kata &amp; Penulis Sastra
                 </span>
               </div>
@@ -175,9 +175,8 @@ export default function RegisterPage({ onNavigateToLogin, onNavigateToHome, onRe
           </div>
 
           {/* Left Column Bottom Perks Footer */}
-          <div className="relative z-10 pt-6 border-t border-white/10 flex flex-wrap items-center justify-between gap-4 text-xs font-sans text-[#99B2A1]">
-            <span className="flex items-center gap-1.5">
-              <Sparkles className="w-3.5 h-3.5 text-[#FABA75]" />
+          <div className="relative z-10 pt-6 border-t border-white/10 flex flex-wrap items-center justify-between gap-4 text-xs font-sans text-[#D6C8BE]">
+            <span>
               Kurasi koleksi tanpa batas
             </span>
             <span>•</span>
@@ -204,7 +203,7 @@ export default function RegisterPage({ onNavigateToLogin, onNavigateToHome, onRe
             >
               {/* Logo Box Emblem (#FFEADD) */}
               <div className="w-9 h-9 rounded bg-[#FFEADD] flex items-center justify-center shadow-sm transition-transform group-hover:scale-105">
-                <BookMarked className="w-4 h-4 text-[#192F23]" />
+                <BookMarked className="w-4 h-4 text-[#483E37]" />
               </div>
               <span className="font-serif text-[28px] leading-9 font-semibold tracking-[-0.7px] text-[#261910]">
                 Bookly<span className="text-[#835418]">.</span>
@@ -235,10 +234,10 @@ export default function RegisterPage({ onNavigateToLogin, onNavigateToHome, onRe
 
             {/* Success State Alert */}
             {successMessage && (
-              <div className="mb-6 p-4 rounded bg-[#DCE5DF]/60 border border-[#192F23]/20 flex items-start gap-3">
-                <Check className="w-5 h-5 text-[#192F23] mt-0.5 flex-shrink-0" />
+              <div className="mb-6 p-4 rounded bg-[#EAE2DC]/60 border border-[#483E37]/20 flex items-start gap-3">
+                <Check className="w-5 h-5 text-[#483E37] mt-0.5 flex-shrink-0" />
                 <div className="flex-1">
-                  <p className="font-sans text-sm font-medium text-[#192F23]">{successMessage}</p>
+                  <p className="font-sans text-sm font-medium text-[#483E37]">{successMessage}</p>
                   <button
                     type="button"
                     onClick={onNavigateToLogin}
@@ -268,7 +267,7 @@ export default function RegisterPage({ onNavigateToLogin, onNavigateToHome, onRe
                 >
                   Nama Lengkap / Nama Pena
                 </label>
-                <div className="relative rounded bg-[#FFF8F5] shadow-[0px_1px_2px_rgba(0,0,0,0.05)] border border-[#C2C8C2]/30 focus-within:border-[#192F23] transition-colors">
+                <div className="relative rounded bg-[#FFF8F5] shadow-[0px_1px_2px_rgba(0,0,0,0.05)] border border-[#C2C8C2]/30 focus-within:border-[#483E37] transition-colors">
                   <input
                     id="register-name"
                     name="name"
@@ -290,7 +289,7 @@ export default function RegisterPage({ onNavigateToLogin, onNavigateToHome, onRe
                 >
                   Email
                 </label>
-                <div className="relative rounded bg-[#FFF8F5] shadow-[0px_1px_2px_rgba(0,0,0,0.05)] border border-[#C2C8C2]/30 focus-within:border-[#192F23] transition-colors">
+                <div className="relative rounded bg-[#FFF8F5] shadow-[0px_1px_2px_rgba(0,0,0,0.05)] border border-[#C2C8C2]/30 focus-within:border-[#483E37] transition-colors">
                   <input
                     id="register-email"
                     name="email"
@@ -312,7 +311,7 @@ export default function RegisterPage({ onNavigateToLogin, onNavigateToHome, onRe
                 >
                   Kata Sandi
                 </label>
-                <div className="relative rounded bg-[#FFF8F5] shadow-[0px_1px_2px_rgba(0,0,0,0.05)] border border-[#C2C8C2]/30 focus-within:border-[#192F23] transition-colors flex items-center">
+                <div className="relative rounded bg-[#FFF8F5] shadow-[0px_1px_2px_rgba(0,0,0,0.05)] border border-[#C2C8C2]/30 focus-within:border-[#483E37] transition-colors flex items-center">
                   <input
                     id="register-password"
                     name="password"
@@ -355,7 +354,7 @@ export default function RegisterPage({ onNavigateToLogin, onNavigateToHome, onRe
                 >
                   Konfirmasi Kata Sandi
                 </label>
-                <div className="relative rounded bg-[#FFF8F5] shadow-[0px_1px_2px_rgba(0,0,0,0.05)] border border-[#C2C8C2]/30 focus-within:border-[#192F23] transition-colors flex items-center">
+                <div className="relative rounded bg-[#FFF8F5] shadow-[0px_1px_2px_rgba(0,0,0,0.05)] border border-[#C2C8C2]/30 focus-within:border-[#483E37] transition-colors flex items-center">
                   <input
                     id="register-confirm-password"
                     name="confirmPassword"
@@ -385,7 +384,7 @@ export default function RegisterPage({ onNavigateToLogin, onNavigateToHome, onRe
                   type="checkbox"
                   checked={formData.agreeTerms}
                   onChange={handleChange}
-                  className="w-4 h-4 mt-0.5 rounded border-[#C2C8C2] text-[#192F23] focus:ring-[#192F23] cursor-pointer accent-[#192F23]"
+                  className="w-4 h-4 mt-0.5 rounded border-[#C2C8C2] text-[#483E37] focus:ring-[#483E37] cursor-pointer accent-[#483E37]"
                 />
                 <label 
                   htmlFor="agreeTerms" 
@@ -407,7 +406,7 @@ export default function RegisterPage({ onNavigateToLogin, onNavigateToHome, onRe
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full h-12 mt-2 bg-[#192F23] hover:bg-[#13241b] active:scale-[0.99] text-white font-sans font-medium text-sm tracking-[0.35px] rounded shadow-[0px_4px_6px_-1px_rgba(0,0,0,0.1),0px_2px_4px_-2px_rgba(0,0,0,0.1)] flex items-center justify-center gap-2 transition-all disabled:opacity-70 cursor-pointer"
+                className="w-full h-12 mt-2 bg-[#483E37] hover:bg-[#3D342E] active:scale-[0.99] text-white font-sans font-medium text-sm tracking-[0.35px] rounded shadow-[0px_4px_6px_-1px_rgba(0,0,0,0.1),0px_2px_4px_-2px_rgba(0,0,0,0.1)] flex items-center justify-center gap-2 transition-all disabled:opacity-70 cursor-pointer"
               >
                 {isSubmitting ? (
                   <span className="inline-flex items-center gap-2">
@@ -438,7 +437,7 @@ export default function RegisterPage({ onNavigateToLogin, onNavigateToHome, onRe
                 onClick={() => {
                   if (onRegisterSuccess) onRegisterSuccess();
                 }}
-                className="w-full max-w-sm h-11 px-4 bg-white hover:bg-[#FAF7F2] border border-[#DFD5C7] hover:border-[#192F23] rounded-lg shadow-xs flex items-center justify-center gap-2.5 transition-all cursor-pointer"
+                className="w-full max-w-sm h-11 px-4 bg-white hover:bg-[#FAF7F2] border border-[#DFD5C7] hover:border-[#483E37] rounded-lg shadow-xs flex items-center justify-center gap-2.5 transition-all cursor-pointer"
               >
                 <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24">
                   <path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.6l3.1-3.1C17.3 1.7 14.8 1 12 1 7.5 1 3.7 3.6 1.9 7.3l3.7 2.9C6.5 7.4 9 5 12 5z" />
@@ -446,7 +445,7 @@ export default function RegisterPage({ onNavigateToLogin, onNavigateToHome, onRe
                   <path fill="#FBBC05" d="M5.6 14.8c-.2-.7-.4-1.5-.4-2.3s.2-1.6.4-2.3L1.9 7.3C.7 9.7 0 12.3 0 15.1s.7 5.4 1.9 7.8l3.7-2.9z" />
                   <path fill="#34A853" d="M12 23.5c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3 0-5.5-2.4-6.4-5.2L1.9 16.5C3.7 20.3 7.5 23.5 12 23.5z" />
                 </svg>
-                <span className="font-sans font-medium text-xs sm:text-sm text-[#192F23]">
+                <span className="font-sans font-medium text-xs sm:text-sm text-[#483E37]">
                   Daftar dengan Google
                 </span>
               </button>
@@ -471,7 +470,7 @@ export default function RegisterPage({ onNavigateToLogin, onNavigateToHome, onRe
             <a href="#" className="hover:text-[#261910] transition-colors">
               Bantuan &amp; Kurasi
             </a>
-            <span>•</span>
+            <span>â€¢</span>
             <a href="#" className="hover:text-[#261910] transition-colors">
               Privasi &amp; Etika Baca
             </a>

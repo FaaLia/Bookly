@@ -1,5 +1,5 @@
 import React from 'react'
-import { Star, ArrowRight, User } from 'lucide-react'
+import { ArrowRight, User } from 'lucide-react'
 import { TRENDING_BOOKS } from '../data/mockData'
 
 const AUTHOR_SLUG_MAP = {
@@ -28,14 +28,14 @@ export default function TrendingSection({ activeCategory, onNavigateBookDetail, 
             <span className="text-xs uppercase tracking-wider text-[#835418] font-semibold">
               Tren Minggu Ini
             </span>
-            <h2 className="font-serif text-2xl sm:text-3xl font-medium text-[#192F23] mt-1">
+            <h2 className="font-serif text-2xl sm:text-3xl font-medium text-[#483E37] mt-1">
               Buku Paling Populer
             </h2>
           </div>
 
           <a 
             href="#collections" 
-            className="text-xs font-medium text-[#192F23] hover:underline flex items-center gap-1"
+            className="text-xs font-medium text-[#483E37] hover:underline flex items-center gap-1"
           >
             <span>Koleksi Kurasi</span>
             <ArrowRight className="w-3.5 h-3.5" />
@@ -64,7 +64,7 @@ export default function TrendingSection({ activeCategory, onNavigateBookDetail, 
 
                   {/* Book Info */}
                   <div className="flex flex-col gap-0.5 pb-1">
-                    <h3 className="font-serif font-medium text-base text-[#192F23] line-clamp-1 group-hover:underline">
+                    <h3 className="font-serif font-medium text-base text-[#483E37] line-clamp-1 group-hover:underline">
                       {book.title}
                     </h3>
                     <p className="text-xs text-[#737973] line-clamp-1">
@@ -76,12 +76,9 @@ export default function TrendingSection({ activeCategory, onNavigateBookDetail, 
                 <div>
                   {/* Card Rating & Reviews */}
                   <div className="pt-2 mt-1 border-t border-[#ECE4D8] flex items-center justify-between text-xs">
-                    <div className="flex items-center gap-1 text-[#835418]">
-                      <Star className="w-3.5 h-3.5 fill-[#835418]" />
-                      <span className="font-medium">
-                        {book.rating}
-                      </span>
-                    </div>
+                    <span className="font-medium text-[#835418]">
+                      Rating {book.rating}
+                    </span>
                     <span className="text-[#737973]">
                       {book.reviewsCount} ulasan
                     </span>
@@ -94,7 +91,7 @@ export default function TrendingSection({ activeCategory, onNavigateBookDetail, 
                       e.stopPropagation()
                       if (onNavigateAuthor) onNavigateAuthor(authorSlug)
                     }}
-                    className="w-full mt-3 py-1.5 px-2.5 rounded-lg bg-white hover:bg-[#F6F2EA] border border-[#DFD5C7] text-xs font-medium text-[#192F23] flex items-center justify-center gap-1.5 transition-colors cursor-pointer shadow-xs"
+                    className="w-full mt-3 py-1.5 px-2.5 rounded-lg bg-white hover:bg-[#F6F2EA] border border-[#DFD5C7] text-xs font-medium text-[#483E37] flex items-center justify-center gap-1.5 transition-colors cursor-pointer shadow-xs"
                     title={`Lihat profil penulis ${book.author}`}
                   >
                     <User className="w-3.5 h-3.5 text-[#835418]" />

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { BookMarked, Send, Heart } from 'lucide-react'
 
-export default function Footer({ onNavigateCatalog }) {
+export default function Footer({ onNavigateCatalog, onNavigateCommunity }) {
   const [email, setEmail] = useState('')
   const [subscribed, setSubscribed] = useState(false)
 
@@ -13,6 +13,13 @@ export default function Footer({ onNavigateCatalog }) {
     }
   }
 
+  const handleCommunityClick = (e, section) => {
+    e.preventDefault()
+    if (onNavigateCommunity) {
+      onNavigateCommunity(section)
+    }
+  }
+
   return (
     <footer className="w-full bg-[#F6F3ED] border-t border-[#C2C8C2]/30 pt-16 pb-12 text-[#424844]">
       <div className="max-w-[1280px] mx-auto px-6 md:px-8">
@@ -21,20 +28,20 @@ export default function Footer({ onNavigateCatalog }) {
           {/* Brand Info */}
           <div className="lg:col-span-2 flex flex-col gap-4">
             <div className="flex items-center gap-2.5">
-              <span className="font-serif text-2xl font-medium text-[#192F23]">
+              <span className="font-serif text-2xl font-medium text-[#483E37]">
                 Bookly
               </span>
             </div>
             <p className="font-sans text-sm leading-relaxed text-[#424844] max-w-sm">
-              Ruang teduh bagi para pecinta sastra, pemikir, dan pembaca setia untuk menemukan bacaan bermakna dan membagikan ulasan mendalam.
+              Ruang teduh bagi para pecinta sastra, pemikir, dan pembaca setia untuk menemukan bacaan bermakna, menjelajahi klub buku, dan membagikan ulasan mendalam.
             </p>
           </div>
 
           {/* Quick Links 1 */}
           <div className="flex flex-col gap-3">
-            <h5 className="font-serif text-base font-semibold text-[#192F23]">Eksplorasi</h5>
+            <h5 className="font-serif text-base font-semibold text-[#483E37]">Eksplorasi</h5>
             <ul className="flex flex-col gap-2 font-sans text-sm">
-              <li><a href="#trending" className="hover:text-[#192F23] transition-colors">Buku Terpopuler</a></li>
+              <li><a href="#trending" className="hover:text-[#483E37] transition-colors">Buku Terpopuler</a></li>
               <li>
                 <a
                   href="#/catalog"
@@ -44,35 +51,75 @@ export default function Footer({ onNavigateCatalog }) {
                       onNavigateCatalog()
                     }
                   }}
-                  className="hover:text-[#192F23] transition-colors cursor-pointer"
+                  className="hover:text-[#483E37] transition-colors cursor-pointer"
                 >
                   Katalog Buku
                 </a>
               </li>
-              <li><a href="#categories" className="hover:text-[#192F23] transition-colors">Pilihan Kategori</a></li>
-              <li><a href="#reviews" className="hover:text-[#192F23] transition-colors">Ulasan Pembaca</a></li>
+              <li><a href="#categories" className="hover:text-[#483E37] transition-colors">Pilihan Kategori</a></li>
+              <li>
+                <a
+                  href="#/community"
+                  onClick={(e) => handleCommunityClick(e, 'all')}
+                  className="hover:text-[#483E37] transition-colors cursor-pointer"
+                >
+                  Ruang Komunitas
+                </a>
+              </li>
             </ul>
           </div>
 
-          {/* Quick Links 2 */}
+          {/* Quick Links 2 - Komunitas Bookly */}
           <div className="flex flex-col gap-3">
-            <h5 className="font-serif text-base font-semibold text-[#192F23]">Komunitas</h5>
+            <h5 className="font-serif text-base font-semibold text-[#483E37]">Komunitas</h5>
             <ul className="flex flex-col gap-2 font-sans text-sm">
-              <li><a href="#" className="hover:text-[#192F23] transition-colors">Klub Buku</a></li>
-              <li><a href="#" className="hover:text-[#192F23] transition-colors">Wawancara Penulis</a></li>
-              <li><a href="#" className="hover:text-[#192F23] transition-colors">Pedoman Komunitas</a></li>
-              <li><a href="#" className="hover:text-[#192F23] transition-colors">Bantuan</a></li>
+              <li>
+                <a
+                  href="#/community?tab=clubs"
+                  onClick={(e) => handleCommunityClick(e, 'clubs')}
+                  className="hover:text-[#483E37] transition-colors cursor-pointer"
+                >
+                  Klub Buku
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#/community?tab=interviews"
+                  onClick={(e) => handleCommunityClick(e, 'interviews')}
+                  className="hover:text-[#483E37] transition-colors cursor-pointer"
+                >
+                  Wawancara Penulis
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#/community?tab=guidelines"
+                  onClick={(e) => handleCommunityClick(e, 'guidelines')}
+                  className="hover:text-[#483E37] transition-colors cursor-pointer"
+                >
+                  Pedoman Komunitas
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#/community?tab=help"
+                  onClick={(e) => handleCommunityClick(e, 'help')}
+                  className="hover:text-[#483E37] transition-colors cursor-pointer"
+                >
+                  Bantuan
+                </a>
+              </li>
             </ul>
           </div>
 
           {/* Newsletter Box */}
           <div className="flex flex-col gap-3">
-            <h5 className="font-serif text-base font-semibold text-[#192F23]">Surat Sastra</h5>
+            <h5 className="font-serif text-base font-semibold text-[#483E37]">Surat Sastra</h5>
             <p className="font-sans text-xs text-[#736E65] leading-normal">
               Daftar buletin mingguan kami untuk esai buku pilihan dan rekomendasi langsung.
             </p>
             {subscribed ? (
-              <p className="font-sans text-xs text-[#192F23] bg-[#DCE5DF] p-2.5 rounded font-medium">
+              <p className="font-sans text-xs text-[#483E37] bg-[#EAE2DC] p-2.5 rounded font-medium">
                 Terima kasih telah bergabung!
               </p>
             ) : (
@@ -83,12 +130,12 @@ export default function Footer({ onNavigateCatalog }) {
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="surel@domain.com"
                   required
-                  className="w-full px-3 py-2 text-xs bg-[#FCF9F3] border border-[#C2C8C2]/40 rounded text-[#1C1C18] focus:outline-none focus:border-[#192F23]"
+                  className="w-full px-3 py-2 text-xs bg-[#FCF9F3] border border-[#C2C8C2]/40 rounded text-[#1C1C18] focus:outline-none focus:border-[#483E37]"
                 />
                 <button
                   type="submit"
                   aria-label="Kirim surel"
-                  className="p-2 bg-[#192F23] hover:bg-[#13241b] text-white rounded transition-colors"
+                  className="p-2 bg-[#483E37] hover:bg-[#3D342E] text-white rounded transition-colors"
                 >
                   <Send className="w-3.5 h-3.5" />
                 </button>

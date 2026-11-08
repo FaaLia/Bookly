@@ -15,8 +15,8 @@ export default function CategoryFilterPills({ selectedCategory, onSelectCategory
                 onClick={() => onSelectCategory(cat.id)}
                 className={`flex-shrink-0 px-3.5 py-1.5 rounded-full font-sans text-xs transition-colors cursor-pointer ${
                   isActive
-                    ? 'bg-[#192F23] text-white font-medium'
-                    : 'bg-white border border-[#DFD5C7] text-[#424844] hover:border-[#192F23] hover:text-[#192F23]'
+                    ? 'bg-[#483E37] text-white font-medium'
+                    : 'bg-white border border-[#DFD5C7] text-[#424844] hover:border-[#483E37] hover:text-[#483E37]'
                 }`}
               >
                 {cat.label}
