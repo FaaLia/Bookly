@@ -150,21 +150,21 @@ Gunakan `book_id` untuk review, favorit, dan reading list.
 ## Kategori
 
 ### GET /api/categories
-Selalu mengembalikan tepat 7 kategori tetap, berurutan seperti di bawah. Pakai `slug` untuk filter `GET /api/books?category=<slug>`.
+Mengembalikan tepat 7 kategori tetap, berurutan seperti di bawah. Pakai `slug` untuk filter `GET /api/books?category=<slug>` dan `category_name` untuk tampilan. `category_id` berbeda-beda di tiap database, jadi jangan dipakai sebagai patokan di frontend.
 
 ```json
 [
-  { "slug": "literary-fiction", "category_id": 1, "category_name": "Fiksi Sastra", "books_count": 12 },
-  { "slug": "non-fiction", "category_id": 2, "category_name": "Non-Fiksi", "books_count": 5 },
-  { "slug": "philosophy", "category_id": 3, "category_name": "Filsafat & Esai", "books_count": 6 },
-  { "slug": "art-design", "category_id": 4, "category_name": "Seni & Desain", "books_count": 2 },
-  { "slug": "poetry", "category_id": 5, "category_name": "Puisi", "books_count": 1 },
-  { "slug": "nature-science", "category_id": 6, "category_name": "Sains & Alam", "books_count": 4 },
-  { "slug": "history", "category_id": 7, "category_name": "Sejarah", "books_count": 3 }
+  { "slug": "literary-fiction", "category_id": 1, "category_name": "Fiksi Sastra", "books_count": 21 },
+  { "slug": "non-fiction", "category_id": 38, "category_name": "Non-Fiksi", "books_count": 2 },
+  { "slug": "philosophy", "category_id": 22, "category_name": "Filsafat & Esai", "books_count": 5 },
+  { "slug": "art-design", "category_id": 29, "category_name": "Seni & Desain", "books_count": 3 },
+  { "slug": "poetry", "category_id": 25, "category_name": "Puisi", "books_count": 3 },
+  { "slug": "nature-science", "category_id": 32, "category_name": "Sains & Alam", "books_count": 4 },
+  { "slug": "history", "category_id": 9, "category_name": "Sejarah", "books_count": 7 }
 ]
 ```
 
-(Angka `category_id` dan `books_count` di atas hanya contoh. `category_id` bisa `null` kalau kategorinya belum ada di database.)
+Angka `books_count` di atas hanya contoh. `category_id` bisa `null` kalau kategori belum pernah dipakai oleh buku mana pun.
 
 ---
 
