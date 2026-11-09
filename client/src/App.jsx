@@ -15,6 +15,7 @@ import ProfilePage from './components/ProfilePage'
 import CatalogPage from './components/CatalogPage'
 import CommunityPage from './components/CommunityPage'
 import { BOOK_DETAILS, TRENDING_BOOKS, CATALOG_BOOKS } from './data/mockData'
+import { authApi, booksApi } from './services/api'
 
 export default function App() {
   const [selectedCategory, setSelectedCategory] = useState('all')

@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { BookMarked, Eye, EyeOff, ArrowRight, ArrowLeft, Check, BookOpen, Quote } from 'lucide-react'
+import { authApi } from '../services/api'
 
 export default function LoginPage({ onNavigateToRegister, onNavigateToHome, onLoginSuccess }) {
   const [formData, setFormData] = useState({
@@ -22,7 +23,7 @@ export default function LoginPage({ onNavigateToRegister, onNavigateToHome, onLo
     setErrorMessage('')
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
 
     if (!formData.email.trim() || !formData.password) {
@@ -31,13 +32,21 @@ export default function LoginPage({ onNavigateToRegister, onNavigateToHome, onLo
     }
 
     setIsSubmitting(true)
-    setTimeout(() => {
-      setIsSubmitting(false)
-      setSuccessMessage('Selamat datang kembali di Sanctuary!')
+    setErrorMessage('')
+    try {
+      const res = await authApi.login({
+        email: formData.email.trim(),
+        password: formData.password
+      })
+      setSuccessMessage(res.message || 'Selamat datang kembali di Sanctuary!')
       if (onLoginSuccess) {
-        setTimeout(() => onLoginSuccess(), 600)
+        setTimeout(() => onLoginSuccess(res.user), 600)
       }
-    }, 1000)
+    } catch (err) {
+      setErrorMessage(err.message || 'Email atau password salah. Silakan coba lagi.')
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (

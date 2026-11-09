@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { authorsApi } from '../services/api'
 import {
   ChevronRight,
   Search,
@@ -21,7 +22,7 @@ export default function AuthorsDirectoryPage({ onNavigateHome, onNavigateAuthorD
     { id: 'classics', label: 'Klasik & Sejarah' },
   ]
 
-  const filteredAuthors = POPULAR_AUTHORS.filter((author) => {
+  const filteredAuthors = (authorsList.length > 0 ? authorsList : POPULAR_AUTHORS).filter((author) => {
     const matchesCategory =
       selectedCategory === 'all' || author.category === selectedCategory
     const matchesSearch =
@@ -32,7 +33,7 @@ export default function AuthorsDirectoryPage({ onNavigateHome, onNavigateAuthorD
     return matchesCategory && matchesSearch
   })
 
-  const featuredAuthor = POPULAR_AUTHORS.find((a) => a.isFeatured) || POPULAR_AUTHORS[0]
+  const featuredAuthor = authorsList.find((a) => a.isFeatured) || POPULAR_AUTHORS[0]
 
   return (
     <div className="w-full bg-[#FCF9F3] min-h-screen text-[#1C1C18] font-sans antialiased">

@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import { booksApi } from '../services/api'
 import { ArrowRight, User } from 'lucide-react'
 import { TRENDING_BOOKS } from '../data/mockData'
 
@@ -44,7 +45,7 @@ export default function TrendingSection({ activeCategory, onNavigateBookDetail, 
 
         {/* Book Cards Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {(booksToDisplay.length > 0 ? booksToDisplay : TRENDING_BOOKS).map((book) => {
+          {(booksToDisplay.length > 0 ? booksToDisplay : trendingList).map((book) => {
             const authorSlug = AUTHOR_SLUG_MAP[book.author] || 'julian-cross'
             return (
               <article

@@ -1,4 +1,5 @@
-import React, { useState, useMemo } from 'react'
+import React, { useState, useMemo, useEffect } from 'react'
+import { booksApi, categoriesApi } from '../services/api'
 import {
   SlidersHorizontal,
   Check,
@@ -183,7 +184,7 @@ export default function CatalogPage({
 
           {/* Pill Filter Cepat Sesuai Gambar Referensi */}
           <div className="w-full flex flex-row flex-wrap items-center gap-2.5 pt-1">
-            {QUICK_CATEGORIES.map((cat) => {
+            {(categoriesList.length > 0 ? categoriesList : QUICK_CATEGORIES).map((cat) => {
               const isActive = selectedQuickCategory === cat.id
               return (
                 <button

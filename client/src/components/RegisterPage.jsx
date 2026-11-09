@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { BookMarked, Eye, EyeOff, ArrowRight, ArrowLeft, Check, Feather } from 'lucide-react'
+import { authApi } from '../services/api'
 
 export default function RegisterPage({ onNavigateToLogin, onNavigateToHome, onRegisterSuccess }) {
   const [formData, setFormData] = useState({
@@ -42,7 +43,7 @@ export default function RegisterPage({ onNavigateToLogin, onNavigateToHome, onRe
     setErrorMessage('')
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
 
     if (!formData.name.trim()) {
@@ -55,8 +56,8 @@ export default function RegisterPage({ onNavigateToLogin, onNavigateToHome, onRe
       return
     }
 
-    if (formData.password.length < 8) {
-      setErrorMessage('Kata sandi harus memiliki minimal 8 karakter.')
+    if (formData.password.length < 6) {
+      setErrorMessage('Kata sandi harus memiliki minimal 6 karakter sesuai spesifikasi Bookly.')
       return
     }
 
@@ -71,14 +72,22 @@ export default function RegisterPage({ onNavigateToLogin, onNavigateToHome, onRe
     }
 
     setIsSubmitting(true)
-    // Simulate register request
-    setTimeout(() => {
-      setIsSubmitting(false)
-      setSuccessMessage(`Selamat datang di Sanctuary, ${formData.name}! Rak bacamu telah disiapkan.`)
+    setErrorMessage('')
+    try {
+      const res = await authApi.register({
+        name: formData.name.trim(),
+        email: formData.email.trim(),
+        password: formData.password
+      })
+      setSuccessMessage(res.message || `Selamat datang di Sanctuary, ${formData.name}! Rak bacamu telah disiapkan.`)
       if (onRegisterSuccess) {
-        setTimeout(() => onRegisterSuccess(), 700)
+        setTimeout(() => onRegisterSuccess(res.user), 700)
       }
-    }, 1200)
+    } catch (err) {
+      setErrorMessage(err.message || 'Gagal mendaftar. Pastikan email belum terdaftar.')
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (

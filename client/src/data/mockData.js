@@ -584,3 +584,39 @@ export const AUTHORS_DETAIL_MAP = {
     ]
   }
 };
+
+
+// ============================================================================
+// INTEGRASI API BOOKLY (sesuai spesifikasi server/API.md)
+// Mengambil data dari backend Express + PostgreSQL dengan fallback ke mockData
+// ============================================================================
+
+export {
+  authApi,
+  booksApi,
+  categoriesApi,
+  authorsApi,
+  reviewsApi,
+  favoritesApi,
+  readingListApi,
+  normalizeBook,
+  normalizeAuthor,
+  getToken,
+  setToken,
+  clearAuth,
+  isAuthenticated
+} from '../services/api';
+
+import {
+  booksApi,
+  categoriesApi,
+  authorsApi,
+  reviewsApi
+} from '../services/api';
+
+export const getApiBooks = (options) => booksApi.getBooks(options);
+export const getApiCategories = () => categoriesApi.getCategories();
+export const getApiBookDetail = (apiBookId) => booksApi.getBookDetail(apiBookId);
+export const getApiAuthors = (q) => authorsApi.getAuthors(q);
+export const getApiAuthorDetail = (authorId) => authorsApi.getAuthorDetail(authorId);
+export const getApiBookReviews = (apiBookId) => reviewsApi.getBookReviews(apiBookId);

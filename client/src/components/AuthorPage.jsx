@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { authorsApi } from '../services/api'
 import {
   ChevronRight,
   Share2,
