@@ -81,6 +81,18 @@ export default function CatalogPage({
   const [viewMode, setViewMode] = useState('grid') // 'grid' | 'list'
   const [currentPage, setCurrentPage] = useState(1)
 
+  const [categoriesList, setCategoriesList] = useState([])
+
+  useEffect(() => {
+    let aktif = true
+    categoriesApi.getCategories().then((data) => {
+      if (aktif) setCategoriesList(data)
+    })
+    return () => {
+      aktif = false
+    }
+  }, [])
+
   // Reset filters to default state matching Figma spec
   const handleResetFilters = () => {
     setSelectedQuickCategory('all')
