@@ -80,6 +80,50 @@ export default function CatalogPage({
   const [sortDropdownOpen, setSortDropdownOpen] = useState(false)
   const [viewMode, setViewMode] = useState('grid') // 'grid' | 'list'
   const [currentPage, setCurrentPage] = useState(1)
+  const [categoriesList, setCategoriesList] = useState(QUICK_CATEGORIES)
+  const [apiBooks, setApiBooks] = useState([])
+  const [isLoading, setIsLoading] = useState(false)
+
+  // Ambil 7 kategori tetap dari GET /api/categories sesuai server/API.md
+  useEffect(() => {
+    let isMounted = true
+    categoriesApi.getCategories().then((cats) => {
+      if (isMounted && Array.isArray(cats) && cats.length > 0) {
+        setCategoriesList(cats)
+      }
+    }).catch((err) => {
+      console.warn('Gagal memuat kategori dari API, fallback ke QUICK_CATEGORIES:', err)
+    })
+    return () => { isMounted = false }
+  }, [])
+
+  // Ambil daftar buku dari GET /api/books (page, limit, category, sort)
+  useEffect(() => {
+    let isMounted = true
+    setIsLoading(true)
+    const apiSort = sortBy === 'rating-desc' ? 'rating' : (sortBy === 'title-asc' ? 'title' : 'newest')
+    booksApi.getBooks({
+      category: selectedQuickCategory !== 'all' ? selectedQuickCategory : null,
+      sort: apiSort,
+      limit: 50
+    }).then((res) => {
+      if (isMounted) {
+        if (res && res.books && res.books.length > 0) {
+          setApiBooks(res.books)
+        } else {
+          setApiBooks(CATALOG_BOOKS)
+        }
+        setIsLoading(false)
+      }
+    }).catch((err) => {
+      console.warn('Gagal memuat buku dari API, fallback ke CATALOG_BOOKS:', err)
+      if (isMounted) {
+        setApiBooks(CATALOG_BOOKS)
+        setIsLoading(false)
+      }
+    })
+    return () => { isMounted = false }
+  }, [selectedQuickCategory, sortBy])
 
   // Reset filters to default state matching Figma spec
   const handleResetFilters = () => {
@@ -102,21 +146,27 @@ export default function CatalogPage({
 
   // Filtered & Sorted books
   const filteredBooks = useMemo(() => {
-    let result = [...CATALOG_BOOKS]
+    const sourceBooks = apiBooks.length > 0 ? apiBooks : CATALOG_BOOKS
+    let result = [...sourceBooks]
 
     // Quick category filter
     if (selectedQuickCategory !== 'all') {
       result = result.filter(
         (b) =>
           b.category === selectedQuickCategory ||
-          (selectedQuickCategory === 'literary-fiction' && b.category === 'literary-fiction') ||
-          (selectedQuickCategory === 'philosophy' && (b.category === 'philosophy' || b.category === 'non-fiction'))
+          b.genreKey === selectedQuickCategory ||
+          b.categoryLabel?.toLowerCase() === selectedQuickCategory.toLowerCase() ||
+          (selectedQuickCategory === 'literary-fiction' && (b.category === 'literary-fiction' || b.categoryLabel === 'Fiksi Sastra')) ||
+          (selectedQuickCategory === 'philosophy' && (b.category === 'philosophy' || b.category === 'non-fiction' || b.categoryLabel?.includes('Filsafat')))
       )
     }
 
     // Genre filter (only apply if some are selected)
     if (selectedGenres.length > 0 && selectedGenres.length < GENRE_CHECKBOXES.length) {
-      result = result.filter((b) => selectedGenres.includes(b.genreKey))
+      result = result.filter((b) => {
+        if (b.genreKey) return selectedGenres.includes(b.genreKey)
+        return true
+      })
     }
 
     // Rating filter
@@ -127,17 +177,17 @@ export default function CatalogPage({
 
     // Era filter
     if (selectedEra !== 'all') {
-      result = result.filter((b) => b.era === selectedEra)
+      result = result.filter((b) => !b.era || b.era === selectedEra)
     }
 
     // Format filter
     if (selectedFormat !== 'all') {
-      result = result.filter((b) => b.format === selectedFormat)
+      result = result.filter((b) => !b.format || b.format === selectedFormat)
     }
 
     // Thickness filter
     if (selectedThickness) {
-      result = result.filter((b) => b.thickness === selectedThickness)
+      result = result.filter((b) => !b.thickness || b.thickness === selectedThickness)
     }
 
     // Sorting
@@ -147,9 +197,10 @@ export default function CatalogPage({
       result.sort((a, b) => a.title.localeCompare(b.title))
     }
 
-    // Fallback: if user filtered everything out, show catalog items to preserve display
-    return result.length > 0 ? result : CATALOG_BOOKS
+    const fallbackList = apiBooks.length > 0 ? apiBooks : CATALOG_BOOKS
+    return result.length > 0 ? result : fallbackList
   }, [
+    apiBooks,
     selectedQuickCategory,
     selectedGenres,
     selectedRating,
@@ -185,19 +236,21 @@ export default function CatalogPage({
           {/* Pill Filter Cepat Sesuai Gambar Referensi */}
           <div className="w-full flex flex-row flex-wrap items-center gap-2.5 pt-1">
             {(categoriesList.length > 0 ? categoriesList : QUICK_CATEGORIES).map((cat) => {
-              const isActive = selectedQuickCategory === cat.id
+              const catKey = cat.slug || cat.id
+              const catLabel = cat.label || cat.category_name
+              const isActive = selectedQuickCategory === catKey
               return (
                 <button
-                  key={cat.id}
+                  key={catKey}
                   type="button"
-                  onClick={() => setSelectedQuickCategory(cat.id)}
+                  onClick={() => setSelectedQuickCategory(catKey)}
                   className={`h-7 px-4 py-1.5 rounded-full font-sans text-[12px] leading-4 font-medium transition-all cursor-pointer flex items-center justify-center ${
                     isActive
                       ? 'bg-[#483E37] text-white shadow-[0px_1px_2px_rgba(0,0,0,0.05)]'
                       : 'bg-[#EEE9E0] text-[#3D3A35] hover:bg-[#E5DFD4]'
                   }`}
                 >
-                  {cat.label}
+                  {catLabel}
                 </button>
               )
             })}
